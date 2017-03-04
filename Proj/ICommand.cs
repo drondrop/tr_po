@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AForge.Imaging.Filters;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,28 @@ namespace Proj
     {
         T Do(T input);
         T Undo(T input);
+    }
+
+    public class Filter_Command : ICommand<Bitmap>
+    {
+        private int _value;
+        private Bitmap _undoValue;
+        public Filter_Command(int value)
+        {
+            _value = value;
+        }
+        public Bitmap Do(Bitmap input)
+        {
+            _undoValue = input;
+            BrightnessCorrection filter = new BrightnessCorrection(_value);
+            filter.Apply(input);
+            return input;
+        }
+
+        public Bitmap Undo(Bitmap input)
+        {
+            return _undoValue;
+        }
     }
 
     public class UndoRedoFactory<T>
