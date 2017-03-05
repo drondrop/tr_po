@@ -17,6 +17,7 @@ namespace Proj
 {
     public partial class Form1 : Form
     {
+        private UndoRedoFactory<Bitmap> imageProc = new UndoRedoFactory<Bitmap>();
         public Form1()
         {
             InitializeComponent();
@@ -34,9 +35,20 @@ namespace Proj
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
+            
+               // BrightnessCorrection filter = new BrightnessCorrection(trackBar1.Value-50);
+                pictureBox2.Image = imageProc.Do(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)), (Bitmap)pictureBox1.Image);
+                //pictureBox2.Image = filter.Apply((Bitmap)pictureBox1.Image);
+        }
 
-                BrightnessCorrection filter = new BrightnessCorrection(trackBar1.Value-50);
-                pictureBox2.Image = filter.Apply((Bitmap)pictureBox1.Image);
+        private void button2_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = imageProc.Undo((Bitmap)pictureBox2.Image);
+        }
+
+        private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            pictureBox2.Image = imageProc.Do(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)), (Bitmap)pictureBox1.Image);
         }
     }
 }

@@ -14,20 +14,34 @@ namespace Proj
         T Undo(T input);
     }
 
+
+    //public abstract class Filter_Command
+    //{       
+    //    private IFilter _filter;
+    //    protected Filter_Command( IFilter filter)
+    //    {
+    //        _filter = filter;
+    //    }
+
+    //}
+
+   
     public class Filter_Command : ICommand<Bitmap>
     {
         private int _value;
         private Bitmap _undoValue;
-        public Filter_Command(int value)
+        private IFilter _filter;
+        public Filter_Command(IFilter filter)
         {
-            _value = value;
+           // _value = value;
+            _filter = filter;
         }
         public Bitmap Do(Bitmap input)
         {
             _undoValue = input;
-            BrightnessCorrection filter = new BrightnessCorrection(_value);
-            filter.Apply(input);
-            return input;
+           // BrightnessCorrection filter = new BrightnessCorrection(_value);
+            
+            return _filter.Apply(input);
         }
 
         public Bitmap Undo(Bitmap input)
