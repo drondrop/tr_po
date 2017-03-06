@@ -48,7 +48,7 @@ namespace Proj
 
         private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
         {
-            pictureBox2.Image = imageProc.Do(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)), (Bitmap)pictureBox1.Image);
+            pictureBox2.Image = imageProc.Do(new Filter_Command(new AForge.Imaging.Filters.ContrastCorrection(trackBar1.Value - 50)), (Bitmap)pictureBox1.Image);
         }
     }
 }

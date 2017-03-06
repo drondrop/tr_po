@@ -28,7 +28,7 @@ namespace Proj
    
     public class Filter_Command : ICommand<Bitmap>
     {
-        private int _value;
+       
         private Bitmap _undoValue;
         private IFilter _filter;
         public Filter_Command(IFilter filter)
