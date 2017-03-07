@@ -7,27 +7,32 @@ using System.Threading.Tasks;
 
 namespace Proj
 {
-    interface ImageProcess
+    interface ImageProcess <T>
     {
 
-        Bitmap LoadFromFile(string filePath);
+        T LoadFromFile(string filePath);
         void SaveToFile(string filePath);
-        Bitmap OriginalImage { get; }
-        Bitmap CurrentImage { get; }
+        T OriginalImage { get; }
+        T CurrentImage { get; }
 
-        void DoPreView();
-        Bitmap DoWithUndo(ICommand<Bitmap> cmd, Bitmap input);
-        Bitmap UnDo(Bitmap input);
-        Bitmap Redo(Bitmap input);
+        T DoPreView(ICommand<T> cmd, T input);
+        T DoWithUndo(ICommand<T> cmd, T input);
+        T UnDo(T input);
+        T Redo(T input);
     }
-    public class ImageProcessWin : ImageProcess
+    public class ImageProcessWin : ImageProcess<Bitmap>
     {
         private Bitmap _originalImage;
         private Bitmap _currentImage;
         private UndoRedoFactory<Bitmap> _imageUndoRedoFactory;
 
+        public ImageProcessWin()
+        {
+            _imageUndoRedoFactory = new UndoRedoFactory<Bitmap>();
+        }
         public Bitmap LoadFromFile(string filePath)
         {
+            _imageUndoRedoFactory.Reset();
             return new Bitmap(_currentImage);
         }
         public void SaveToFile(string filePath)
@@ -36,7 +41,10 @@ namespace Proj
         }
 
 
-        public void DoPreView() { }
+        public Bitmap DoPreView(ICommand<Bitmap> cmd, Bitmap input) 
+        {
+            return _imageUndoRedoFactory.DoPreView(cmd, input);
+        }
         public Bitmap DoWithUndo(ICommand<Bitmap> cmd, Bitmap input)
         {
             return _imageUndoRedoFactory.Do(cmd, input);

@@ -87,6 +87,13 @@ namespace Proj
             _Redo.Clear(); // Once we issue a new command, the redo stack clears
             return output;
         }
+        public T DoPreView(ICommand<T> cmd, T input)
+        {
+            T output = cmd.Do(input);
+            //_Undo.Push(cmd);
+            //_Redo.Clear(); // Once we issue a new command, the redo stack clears
+            return output;
+        }
         public T Undo(T input)
         {
             if (_Undo.Count > 0)
