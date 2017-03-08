@@ -12,18 +12,9 @@ namespace Proj
     {
         T Do(T input);
         T Undo(T input);
+        T DoPreView(T input);
     }
 
-
-    //public abstract class Filter_Command
-    //{       
-    //    private IFilter _filter;
-    //    protected Filter_Command( IFilter filter)
-    //    {
-    //        _filter = filter;
-    //    }
-
-    //}
 
    
     public class Filter_Command : ICommand<Bitmap>
@@ -48,6 +39,11 @@ namespace Proj
         {
             return _undoValue;
         }
+        public Bitmap DoPreView(Bitmap input)
+        {
+            return _filter.Apply(input);
+        }
+        
     }
 
     public class UndoRedoFactory<T>
@@ -89,9 +85,7 @@ namespace Proj
         }
         public T DoPreView(ICommand<T> cmd, T input)
         {
-            T output = cmd.Do(input);
-            //_Undo.Push(cmd);
-            //_Redo.Clear(); // Once we issue a new command, the redo stack clears
+            T output = cmd.DoPreView(input);
             return output;
         }
         public T Undo(T input)

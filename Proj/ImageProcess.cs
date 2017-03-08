@@ -15,8 +15,8 @@ namespace Proj
         T OriginalImage { get; }
         T CurrentImage { get; }
 
-        T DoPreView(ICommand<T> cmd, T input);
-        T DoWithUndo(ICommand<T> cmd, T input);
+        T DoPreView(ICommand<T> cmd);
+        T DoWithUndo(ICommand<T> cmd);
         T UnDo(T input);
         T Redo(T input);
     }
@@ -33,7 +33,10 @@ namespace Proj
         public Bitmap LoadFromFile(string filePath)
         {
             _imageUndoRedoFactory.Reset();
-            return new Bitmap(_currentImage);
+
+            _originalImage =(Bitmap) System.Drawing.Image.FromFile(filePath);
+              _currentImage=_originalImage;
+            return _originalImage;
         }
         public void SaveToFile(string filePath)
         {
@@ -41,21 +44,24 @@ namespace Proj
         }
 
 
-        public Bitmap DoPreView(ICommand<Bitmap> cmd, Bitmap input) 
+        public Bitmap DoPreView(ICommand<Bitmap> cmd) 
         {
-            return _imageUndoRedoFactory.DoPreView(cmd, input);
+            return _imageUndoRedoFactory.DoPreView(cmd, _currentImage);
         }
-        public Bitmap DoWithUndo(ICommand<Bitmap> cmd, Bitmap input)
+        public Bitmap DoWithUndo(ICommand<Bitmap> cmd)
         {
-            return _imageUndoRedoFactory.Do(cmd, input);
+            _currentImage=_imageUndoRedoFactory.Do(cmd, _currentImage);
+            return _currentImage;
         }
         public Bitmap UnDo(Bitmap input)
         {
-            return _imageUndoRedoFactory.Undo(input);
+            _currentImage=_imageUndoRedoFactory.Undo(_currentImage);
+            return _currentImage;
         }
         public Bitmap Redo(Bitmap input)
         {
-            return _imageUndoRedoFactory.Redo(input);
+            _currentImage=_imageUndoRedoFactory.Redo(_currentImage);
+            return _currentImage;
         }
 
         public Bitmap OriginalImage { get { return _originalImage; } }
