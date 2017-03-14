@@ -26,19 +26,16 @@ namespace Proj
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(openFileDialog1.ShowDialog()==DialogResult.OK)
-            {
-                pictureBox1.Image = iProcc.LoadFromFile(openFileDialog1.FileName);
-
-                
-            }
+            iProcc.LoadFromFile();
+            pictureBox1.Image = iProcc.CurrentImage;
+            iProcc.SaveToFile();
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
             
                // BrightnessCorrection filter = new BrightnessCorrection(trackBar1.Value-50);
-            pictureBox2.Image = iProcc.DoPreView(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)));
+            //pictureBox2.Image = iProcc.DoPreView(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)));
                 //pictureBox2.Image = filter.Apply((Bitmap)pictureBox1.Image);
         }
 
@@ -49,7 +46,9 @@ namespace Proj
 
         private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
         {
-            pictureBox2.Image = iProcc.DoWithUndo(new Filter_Command(new AForge.Imaging.Filters.BrightnessCorrection(trackBar1.Value - 50)));
+            //OilPainting --- нормальный Sepia
+
+            pictureBox2.Image = iProcc.DoWithUndo(new Filter_Command(new AForge.Imaging.Filters.OilPainting() ));
         }
     }
 }

@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proj
 {
     interface ImageProcess <T>
     {
 
-        T LoadFromFile(string filePath);
-        void SaveToFile(string filePath);
+        void LoadFromFile();
+        void SaveToFile();
         T OriginalImage { get; }
         T CurrentImage { get; }
 
@@ -30,17 +32,50 @@ namespace Proj
         {
             _imageUndoRedoFactory = new UndoRedoFactory<Bitmap>();
         }
-        public Bitmap LoadFromFile(string filePath)
+        public void  LoadFromFile()
         {
             _imageUndoRedoFactory.Reset();
-
-            _originalImage =(Bitmap) System.Drawing.Image.FromFile(filePath);
-              _currentImage=_originalImage;
-            return _originalImage;
+            using (OpenFileDialog open = new OpenFileDialog())
+            {
+                open.Filter = "";
+                ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+                string sep = string.Empty;
+                foreach (var c in codecs)
+                {
+                    string codecName = c.CodecName.Substring(8).Replace("Codec", "Files").Trim();
+                    open.Filter = String.Format("{0}{1}{2} ({3})|{3}", open.Filter, sep, codecName, c.FilenameExtension);
+                    sep = "|";
+                }
+                open.Filter = String.Format("{0}{1}{2} ({3})|{3}", open.Filter, sep, "All Files", "*.*");
+                open.DefaultExt = ".png"; // Default file extension 
+                // Show open file dialog box 
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+                    _originalImage = (Bitmap)System.Drawing.Image.FromFile(open.FileName);
+                    _currentImage = _originalImage;
+                }
+            }
         }
-        public void SaveToFile(string filePath)
+        public void SaveToFile()
         {
-
+            using (SaveFileDialog save = new SaveFileDialog())
+            {           
+                save.Filter = "";
+                ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+                string sep = string.Empty;
+                foreach (var c in codecs)
+                {
+                    string codecName = c.CodecName.Substring(8).Replace("Codec", "Files").Trim();
+                    save.Filter = String.Format("{0}{1}{2} ({3})|{3}", save.Filter, sep, codecName, c.FilenameExtension);
+                    sep = "|";
+                }
+                save.Filter = String.Format("{0}{1}{2} ({3})|{3}", save.Filter, sep, "All Files", "*.*");
+                save.DefaultExt = ".png"; // Default file extension 
+                if (save.ShowDialog() == DialogResult.OK)
+                {
+                    _originalImage.Save(save.FileName);
+                }
+            }
         }
 
 
@@ -50,7 +85,7 @@ namespace Proj
         }
         public Bitmap DoWithUndo(ICommand<Bitmap> cmd)
         {
-            _currentImage=_imageUndoRedoFactory.Do(cmd, _currentImage);
+            _currentImage = _imageUndoRedoFactory.Do(cmd, _originalImage);
             return _currentImage;
         }
         public Bitmap UnDo(Bitmap input)
