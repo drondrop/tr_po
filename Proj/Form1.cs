@@ -18,6 +18,13 @@ namespace Proj
     public partial class Form1 : Form
     {
         ImageProcessWin iProcc = new ImageProcessWin();
+        List<ICFilter> filters_correction = new List<ICFilter>()
+        {
+            new Brightness_Correction(),
+            new Contrast_Correction(),
+            new HueModifier_Correction(),
+            new Saturation_Correction()
+        };
         public Form1()
         {
             InitializeComponent();
@@ -28,12 +35,17 @@ namespace Proj
         {
             iProcc.LoadFromFile();
             pictureBox1.Image = iProcc.CurrentImage;
-            iProcc.SaveToFile();
+           // iProcc.SaveToFile();
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-            
+            double mapping = (double)trackBar1.Value * 0.01;//(double)trackBar1.Value
+            //OilPainting --- нормальный Sepia
+            //HueModifier filter = new AForge.Imaging.Filters.HueModifier((int)(359 * mapping));
+            int i = 3;
+            filters_correction[i].param = mapping;
+            pictureBox2.Image = iProcc.DoPreView(new Filter_Command(filters_correction[i]));
                // BrightnessCorrection filter = new BrightnessCorrection(trackBar1.Value-50);
             //pictureBox2.Image = iProcc.DoPreView(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)));
                 //pictureBox2.Image = filter.Apply((Bitmap)pictureBox1.Image);
@@ -46,9 +58,10 @@ namespace Proj
 
         private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
         {
-            //OilPainting --- нормальный Sepia
-
-            pictureBox2.Image = iProcc.DoWithUndo(new Filter_Command(new AForge.Imaging.Filters.OilPainting() ));
+            //double mapping = (double)trackBar1.Value *0.01;
+            ////OilPainting --- нормальный Sepia
+            //HueModifier filter = new AForge.Imaging.Filters.HueModifier((int)(359*mapping));
+            //pictureBox2.Image = iProcc.DoWithUndo(new Filter_Command_(filter));
         }
     }
 }
