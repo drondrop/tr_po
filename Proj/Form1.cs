@@ -1,4 +1,9 @@
-﻿using System;
+﻿using AForge;
+using AForge.Imaging;
+using AForge.Imaging.Filters;
+using Proj.Command;
+using Proj.Filters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,9 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AForge.Imaging;
-using AForge;
-using AForge.Imaging.Filters;
 
 
 
@@ -28,6 +30,8 @@ namespace Proj
         public Form1()
         {
             InitializeComponent();
+            listView1.View = View.LargeIcon;
+            listView1.Columns.Add("1");
             //pictureBox2.DataBindings= new ControlBindingsCollection()
         }
 
@@ -35,9 +39,26 @@ namespace Proj
         {
             iProcc.LoadFromFile();
             pictureBox1.Image = iProcc.CurrentImage;
+            init();
            // iProcc.SaveToFile();
         }
-
+        private void init()
+        {
+            ImageList inmg = new ImageList();
+            inmg.ImageSize = new Size(64, 64);
+            foreach(var t in filters_correction)
+            {
+                t.param=0.6;
+               inmg.Images.Add( t.Apply(iProcc.CurrentImage));
+            }
+            listView1.LargeImageList = inmg;
+            int tt=0;
+            foreach (var t in filters_correction)
+            {
+                listView1.Items.Add(t.ToString(), tt);
+                    tt++;
+            }
+        }
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
             double mapping = (double)trackBar1.Value * 0.01;//(double)trackBar1.Value

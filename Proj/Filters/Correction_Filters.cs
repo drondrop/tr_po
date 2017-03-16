@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proj
+namespace Proj.Filters
 {
     public interface ICFilter
     {

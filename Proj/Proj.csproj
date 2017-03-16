@@ -64,14 +64,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Correction_Filters.cs" />
+    <Compile Include="Command\UndoRedo.cs" />
+    <Compile Include="Filters\Correction_Filters.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="ICommand.cs" />
+    <Compile Include="Command\ICommand.cs" />
     <Compile Include="ImageProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
