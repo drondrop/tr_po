@@ -20,13 +20,7 @@ namespace Proj
     public partial class Form1 : Form
     {
         ImageProcessWin iProcc = new ImageProcessWin();
-        List<ICFilter> filters_correction = new List<ICFilter>()
-        {
-            new Brightness_Correction(),
-            new Contrast_Correction(),
-            new HueModifier_Correction(),
-            new Saturation_Correction()
-        };
+        List<ICFilter> filters_correction = Filter_factory.getFilters();
         public Form1()
         {
             InitializeComponent();

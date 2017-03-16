@@ -98,4 +98,23 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
     }
+
+    public interface IPhFilter
+    {
+    }
+    public class Filter_factory
+    {
+        public static List<ICFilter> getFilters()
+        {
+            List<ICFilter> fList = new List<ICFilter>(){
+               new Saturation_Correction(),
+               new Brightness_Correction(),
+               new Contrast_Correction(),
+               new HueModifier_Correction()
+            };
+            return fList;
+        }
+        
+    }
+
 }
