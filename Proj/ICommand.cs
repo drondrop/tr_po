@@ -9,7 +9,7 @@ namespace Proj
     public interface ICommand<T>
     {
         T Do(T input);
-        T Undo(T input);
+        T Undo(T input);//dfdgdfgfdg
     }
 
     public class UndoRedoFactory<T>
