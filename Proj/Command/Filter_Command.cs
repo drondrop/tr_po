@@ -14,8 +14,8 @@ namespace Proj.Command
     {
 
         private Bitmap _undoValue;
-        private ICFilter _filter;
-        public Filter_Command(ICFilter filter)
+        private iFilter _filter;
+        public Filter_Command(iFilter filter)
         {
             // _value = value;
             _filter = filter;
@@ -23,8 +23,6 @@ namespace Proj.Command
         public Bitmap Do(Bitmap input)
         {
             _undoValue = input;
-            // BrightnessCorrection filter = new BrightnessCorrection(_value);
-
             return _filter.Apply(input);
         }
 

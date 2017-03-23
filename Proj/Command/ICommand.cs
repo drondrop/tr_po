@@ -11,6 +11,11 @@ namespace Proj.Command
 {
     public interface ICommand<T>
     {
+        /// <summary>
+        /// Do operation
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Result</returns>
         T Do(T input);
         T Undo(T input);
         T DoPreView(T input);

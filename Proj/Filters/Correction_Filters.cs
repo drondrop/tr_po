@@ -1,4 +1,5 @@
-﻿using AForge.Imaging.Filters;
+﻿using AForge;
+using AForge.Imaging.Filters;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-    
+
     public class Saturation_Correction : ICFilter
     {
         private SaturationCorrection _filter;
@@ -94,12 +95,55 @@ namespace Proj.Filters
         }
     }
 
-    public interface IPhFilter
+
+
+
+    public class Grayscale_filter : iFilter
     {
+        Grayscale _filter;
+        public Grayscale_filter(double cr = 0.2125, double cg = 0.7154, double cb = 0.0721)
+        {
+            _filter = new Grayscale(cr, cg, cb);
+        }
+        public Bitmap Apply(Bitmap input)
+        {
+            return _filter.Apply(input);
+        }
+
     }
+    public class YCbCr_filter : iFilter
+    {
+        YCbCrFiltering _filter;
+        public YCbCr_filter(Range Cb, Range Cr, Range Y)
+        {
+            _filter = new YCbCrFiltering(Y, Cb, Cr);
+        }
+        public Bitmap Apply(Bitmap input)
+        {
+            return _filter.Apply(input);
+        }
+
+    }
+    public class ColorFiltering_filter : iFilter
+    {
+        ColorFiltering _filter;
+        public ColorFiltering_filter(IntRange r, IntRange g, IntRange b)
+        {
+            _filter = new ColorFiltering(r, g, b);
+        }
+        public Bitmap Apply(Bitmap input)
+        {
+            return _filter.Apply(input);
+        }
+
+    }
+    
+
+
     public class Filter_factory
     {
         private List<ICFilter> _correctionFiltersCollection;
+        private List<iFilter> _photoFiltersCollection;
         public Filter_factory()
         {
             _correctionFiltersCollection = new List<ICFilter>(){
@@ -108,12 +152,26 @@ namespace Proj.Filters
                new Contrast_Correction(),
                new HueModifier_Correction()
             };
+            _photoFiltersCollection = new List<iFilter>(){
+                new Grayscale_filter(),
+                new Grayscale_filter(0.2125,0.7154,0.0721),
+                new YCbCr_filter(new Range( -0.5f, 0.5f ),new Range( -0.5f, 0.5f ),new Range( 0, 0.9f )),
+                new ColorFiltering_filter(new IntRange(10,255),new IntRange(50,255),new IntRange(0,255))
+
+            };
         }
         public List<ICFilter> Corrections
         {
             get
             {
                 return _correctionFiltersCollection;
+            }
+        }
+        public List<iFilter> Filters
+        {
+            get
+            {
+                return _photoFiltersCollection;
             }
         }
     }

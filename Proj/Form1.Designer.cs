@@ -104,6 +104,7 @@
             this.listView1.Size = new System.Drawing.Size(176, 256);
             this.listView1.TabIndex = 5;
             this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
             // Form1
             // 

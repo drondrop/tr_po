@@ -41,14 +41,14 @@ namespace Proj
         {
             ImageList inmg = new ImageList();
             inmg.ImageSize = new Size(64, 64);
-            foreach (var t in iProcc.filters_correction.Corrections)
+            foreach (var t in iProcc.filters_correction.Filters)
             {
-                t.param=0.6;
+               // t.param=0.6;
                inmg.Images.Add( t.Apply(iProcc.CurrentImage));
             }
             listView1.LargeImageList = inmg;
             int tt=0;
-            foreach (var t in iProcc.filters_correction.Corrections)
+            foreach (var t in iProcc.filters_correction.Filters )
             {
                 listView1.Items.Add(t.ToString(), tt);
                     tt++;
@@ -78,6 +78,14 @@ namespace Proj
             ////OilPainting --- нормальный Sepia
             //HueModifier filter = new AForge.Imaging.Filters.HueModifier((int)(359*mapping));
             //pictureBox2.Image = iProcc.DoWithUndo(new Filter_Command_(filter));
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+           // iProcc.filters_correction.Corrections[i].param = mapping;
+             int i = listView1.HitTest(e.Location).Item.Index;
+            pictureBox2.Image = iProcc.DoPreView(new Filter_Command(iProcc.filters_correction.Filters[i]));
+           
         }
     }
 }
