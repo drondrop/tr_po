@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Proj.Properties
+namespace Projector.Properties
 {
 
 
