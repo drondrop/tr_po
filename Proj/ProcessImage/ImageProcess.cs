@@ -1,4 +1,5 @@
 ﻿using Proj.Command;
+using Proj.Filters;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,27 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Proj
+namespace Proj.ProcessImage
 {
-    interface ImageProcess <T>
-    {
-
-        void LoadFromFile();
-        void SaveToFile();
-        T OriginalImage { get; }
-        T CurrentImage { get; }
-
-        T DoPreView(ICommand<T> cmd);
-        T DoWithUndo(ICommand<T> cmd);
-        T UnDo(T input);
-        T Redo(T input);
-    }
-    public class ImageProcessWin : ImageProcess<Bitmap>
+   
+    public class ImageProcessWin : IProcessImage<Bitmap>
     {
         private Bitmap _originalImage;
         private Bitmap _currentImage;
         private UndoRedoFactory<Bitmap> _imageUndoRedoFactory;
-
+        public Filter_factory filters_correction = new  Filter_factory();
         public ImageProcessWin()
         {
             _imageUndoRedoFactory = new UndoRedoFactory<Bitmap>();

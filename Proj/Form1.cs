@@ -3,6 +3,7 @@ using AForge.Imaging;
 using AForge.Imaging.Filters;
 using Proj.Command;
 using Proj.Filters;
+using Proj.ProcessImage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace Proj
     public partial class Form1 : Form
     {
         ImageProcessWin iProcc = new ImageProcessWin();
-        List<ICFilter> filters_correction = Filter_factory.getFilters();
+        
         public Form1()
         {
             InitializeComponent();
@@ -40,14 +41,14 @@ namespace Proj
         {
             ImageList inmg = new ImageList();
             inmg.ImageSize = new Size(64, 64);
-            foreach(var t in filters_correction)
+            foreach (var t in iProcc.filters_correction.Corrections)
             {
                 t.param=0.6;
                inmg.Images.Add( t.Apply(iProcc.CurrentImage));
             }
             listView1.LargeImageList = inmg;
             int tt=0;
-            foreach (var t in filters_correction)
+            foreach (var t in iProcc.filters_correction.Corrections)
             {
                 listView1.Items.Add(t.ToString(), tt);
                     tt++;
@@ -59,8 +60,8 @@ namespace Proj
             //OilPainting --- нормальный Sepia
             //HueModifier filter = new AForge.Imaging.Filters.HueModifier((int)(359 * mapping));
             int i = 3;
-            filters_correction[i].param = mapping;
-            pictureBox2.Image = iProcc.DoPreView(new Filter_Command(filters_correction[i]));
+            iProcc.filters_correction.Corrections[i].param = mapping;
+            pictureBox2.Image = iProcc.DoPreView(new Filter_Command(iProcc.filters_correction.Corrections[i]));
                // BrightnessCorrection filter = new BrightnessCorrection(trackBar1.Value-50);
             //pictureBox2.Image = iProcc.DoPreView(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)));
                 //pictureBox2.Image = filter.Apply((Bitmap)pictureBox1.Image);

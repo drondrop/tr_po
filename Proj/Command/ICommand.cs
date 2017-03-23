@@ -18,64 +18,6 @@ namespace Proj.Command
 
 
    
-    public class Filter_Command : ICommand<Bitmap>
-    {
-       
-        private Bitmap _undoValue;
-        private ICFilter _filter;
-        public Filter_Command(ICFilter filter)
-        {
-           // _value = value;
-            _filter = filter;
-        }
-        public Bitmap Do(Bitmap input)
-        {
-            _undoValue = input;
-           // BrightnessCorrection filter = new BrightnessCorrection(_value);
-            
-            return _filter.Apply(input);
-        }
-
-        public Bitmap Undo(Bitmap input)
-        {
-            return _undoValue;
-        }
-        public Bitmap DoPreView(Bitmap input)
-        {
-            return _filter.Apply(input);
-        }
-        
-    }
-    public class Filter_Command_ : ICommand<Bitmap>
-    {
-
-        private Bitmap _undoValue;
-        private IFilter _filter;
-        public Filter_Command_(IFilter filter)
-        {
-            // _value = value;
-            _filter = filter;
-        }
-        public Bitmap Do(Bitmap input)
-        {
-            _undoValue = input;
-            // BrightnessCorrection filter = new BrightnessCorrection(_value);
-
-            return _filter.Apply(input);
-        }
-
-        public Bitmap Undo(Bitmap input)
-        {
-            return _undoValue;
-        }
-        public Bitmap DoPreView(Bitmap input)
-        {
-            return _filter.Apply(input);
-        }
-
-    }
-
-
    
 
 }

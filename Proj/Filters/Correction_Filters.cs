@@ -8,12 +8,7 @@ using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-    public interface ICFilter
-    {
-        Bitmap Apply(Bitmap image);
-        double param { set; }
-    }
-
+    
     public class Saturation_Correction : ICFilter
     {
         private SaturationCorrection _filter;
@@ -47,7 +42,7 @@ namespace Proj.Filters
         {
             set
             {
-                _param =(int) (value * 255*2) - 255;
+                _param = (int)(value * 255 * 2) - 255;
             }
         }
         public Bitmap Apply(Bitmap input)
@@ -68,7 +63,7 @@ namespace Proj.Filters
         {
             set
             {
-                _param = (int)(value * 127*2) - 127;
+                _param = (int)(value * 127 * 2) - 127;
             }
         }
         public Bitmap Apply(Bitmap input)
@@ -104,17 +99,26 @@ namespace Proj.Filters
     }
     public class Filter_factory
     {
-        public static List<ICFilter> getFilters()
+        private List<ICFilter> _correctionFiltersCollection;
+        public Filter_factory()
         {
-            List<ICFilter> fList = new List<ICFilter>(){
+            _correctionFiltersCollection = new List<ICFilter>(){
                new Saturation_Correction(),
                new Brightness_Correction(),
                new Contrast_Correction(),
                new HueModifier_Correction()
             };
-            return fList;
         }
-        
+        public List<ICFilter> Corrections
+        {
+            get
+            {
+                return _correctionFiltersCollection;
+            }
+        }
     }
 
+
 }
+
+
