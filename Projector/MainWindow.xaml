@@ -29,36 +29,16 @@
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="100" Margin="10,295,0,0" Grid.Row="1" VerticalAlignment="Top" Width="447">
             <TabItem Header="Фильтры">
                 <Grid Background="#FFE5E5E5">
-                    <Button x:Name="button" Content="Original" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="52" Height="48" Click="button_Click">
-                        <Button.Background>
-                            <ImageBrush ImageSource="1.jpg"/>
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="button1" Content="X-Pro II" HorizontalAlignment="Left" Margin="84,10,0,0" VerticalAlignment="Top" Width="52" Height="48" Click="button1_Click_1">
-                        <Button.Background>
-                            <ImageBrush ImageSource="2.jpg"/>
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="button2" Content="Lomo-fi" HorizontalAlignment="Left" Margin="157,10,0,0" VerticalAlignment="Top" Width="52" Height="48" Click="button2_Click">
-                        <Button.Background>
-                            <ImageBrush ImageSource="3.jpg"/>
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="button3" Content="Earlybird" HorizontalAlignment="Left" Margin="229,10,0,0" VerticalAlignment="Top" Width="52" Height="48" Click="button3_Click">
-                        <Button.Background>
-                            <ImageBrush ImageSource="4.jpg"/>
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="button4" Content="Sutro" HorizontalAlignment="Left" Margin="301,10,0,0" VerticalAlignment="Top" Width="52" Height="48" Click="button4_Click">
-                        <Button.Background>
-                            <ImageBrush ImageSource="5.jpg"/>
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="button5" Content="Lily" HorizontalAlignment="Left" Margin="375,10,0,0" VerticalAlignment="Top" Width="52" Height="48" Click="button5_Click">
-                        <Button.Background>
-                            <ImageBrush ImageSource="6.jpg"/>
-                        </Button.Background>
-                    </Button>
+                    <ListView x:Name="listView" HorizontalAlignment="Center" Height="56" Margin="5,7,0,5" Width="425" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+                        <ListViewItem Width="50" Height="50" Content="1">
+                            <ListViewItem.Background>
+                                <ImageBrush ImageSource="1.jpg"/>
+                            </ListViewItem.Background>
+                        </ListViewItem>
+                        <ListViewItem IsSelected="True" Content="with several"/>
+                        <ListViewItem Content="items"/>
+                        <ListViewItem Content="items"/>
+                    </ListView>
                 </Grid>
             </TabItem>
             <TabItem Header="Эффекты">
@@ -70,7 +50,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Slider x:Name="slider" HorizontalAlignment="Left" Margin="130,268,0,0" Grid.Row="1" VerticalAlignment="Top" Width="207" Visibility="Hidden"/>
+        <Slider x:Name="slider" HorizontalAlignment="Left" Margin="130,268,0,0" Grid.Row="1" VerticalAlignment="Top" Width="207"/>
 
     </Grid>
 </Window>

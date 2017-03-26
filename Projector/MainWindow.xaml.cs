@@ -22,7 +22,7 @@ namespace Projector
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -30,39 +30,5 @@ namespace Projector
             this.Close();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void button1_Click_1(object sender, RoutedEventArgs e)
-        {
-            slider.Visibility = Visibility.Visible;
-        }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            slider.Visibility = Visibility.Hidden;
-        }
-
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-            slider.Visibility = Visibility.Hidden;
-        }
-
-        private void button3_Click(object sender, RoutedEventArgs e)
-        {
-            slider.Visibility = Visibility.Visible;
-        }
-
-        private void button4_Click(object sender, RoutedEventArgs e)
-        {
-            slider.Visibility = Visibility.Hidden;
-        }
-
-        private void button5_Click(object sender, RoutedEventArgs e)
-        {
-            slider.Visibility = Visibility.Visible;
-        }
     }
 }
