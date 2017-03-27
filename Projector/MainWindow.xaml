@@ -30,14 +30,38 @@
             <TabItem Header="Фильтры">
                 <Grid Background="#FFE5E5E5">
                     <ListView x:Name="listView" HorizontalAlignment="Center" Height="56" Margin="5,7,0,5" Width="425" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
-                        <ListViewItem Width="50" Height="50" Content="1">
-                            <ListViewItem.Background>
-                                <ImageBrush ImageSource="1.jpg"/>
-                            </ListViewItem.Background>
-                        </ListViewItem>
-                        <ListViewItem IsSelected="True" Content="with several"/>
-                        <ListViewItem Content="items"/>
-                        <ListViewItem Content="items"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ListViewItem Width="45" Height="45" Content="Original" Foreground="White" HorizontalAlignment="Center" Margin="5">
+                                <ListViewItem.Background>
+                                    <ImageBrush ImageSource="1.jpg"/>
+                                </ListViewItem.Background>
+                            </ListViewItem>
+                            <ListViewItem Width="45" Height="45" Content="X-Pro II" Foreground="White" HorizontalAlignment="Center" Margin="5">
+                                <ListViewItem.Background>
+                                    <ImageBrush ImageSource="2.jpg"/>
+                                </ListViewItem.Background>
+                            </ListViewItem>
+                            <ListViewItem Width="45" Height="45" Content="Lomo-fi" Foreground="White" HorizontalAlignment="Center" Margin="5">
+                                <ListViewItem.Background>
+                                    <ImageBrush ImageSource="3.jpg"/>
+                                </ListViewItem.Background>
+                            </ListViewItem>
+                            <ListViewItem Width="45" Height="45" Content="Earlybird" Foreground="White" HorizontalAlignment="Center" Margin="5">
+                                <ListViewItem.Background>
+                                    <ImageBrush ImageSource="4.jpg"/>
+                                </ListViewItem.Background>
+                            </ListViewItem>
+                            <ListViewItem Width="45" Height="45" Content="Sutro" Foreground="White" HorizontalAlignment="Center" Margin="5">
+                                <ListViewItem.Background>
+                                    <ImageBrush ImageSource="5.jpg"/>
+                                </ListViewItem.Background>
+                            </ListViewItem>
+                            <ListViewItem Width="45" Height="45" Content="Lily" Foreground="White" HorizontalAlignment="Center" Margin="5">
+                                <ListViewItem.Background>
+                                    <ImageBrush ImageSource="6.jpg"/>
+                                </ListViewItem.Background>
+                            </ListViewItem>
+                        </StackPanel>
                     </ListView>
                 </Grid>
             </TabItem>
