@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace Proj.Command
 {
-
+    /// <summary>
+    /// Implementation of Icommand Interface, represents Filter as Command...
+    /// </summary>
     public class Filter_Command : ICommand<Bitmap>
     {
 

@@ -16,11 +16,11 @@ namespace Proj.ProcessImage
     {
         private Bitmap _originalImage;
         private Bitmap _currentImage;
-        private UndoRedoFactory<Bitmap> _imageUndoRedoFactory;
+        private UndoRedoKeper<Bitmap> _imageUndoRedoFactory;
         public Filter_factory filters_correction = new  Filter_factory();
         public ImageProcessWin()
         {
-            _imageUndoRedoFactory = new UndoRedoFactory<Bitmap>();
+            _imageUndoRedoFactory = new UndoRedoKeper<Bitmap>();
         }
         public void  LoadFromFile()
         {
@@ -63,7 +63,7 @@ namespace Proj.ProcessImage
                 save.DefaultExt = ".png"; // Default file extension 
                 if (save.ShowDialog() == DialogResult.OK)
                 {
-                    _originalImage.Save(save.FileName);
+                    _currentImage.Save(save.FileName);
                 }
             }
         }

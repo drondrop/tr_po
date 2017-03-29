@@ -7,15 +7,11 @@ using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-    public interface ICFilter : iFilter
+    public interface iCFilter : iFilter
     {
-
         /// <summary>
-        /// Apply filter on a image
+        /// Value of filter intenssivety
         /// </summary>
-        /// <param name="image"></param>
-        /// <returns></returns>
-        Bitmap Apply(Bitmap image);
         double param { set; }
     }
     public interface iFilter

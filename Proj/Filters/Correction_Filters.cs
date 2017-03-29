@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Proj.Filters
 {
 
-    public class Saturation_Correction : ICFilter
+    public class Saturation_Correction : iCFilter
     {
         private SaturationCorrection _filter;
         private float _param;
@@ -33,7 +33,7 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
     }
-    public class Brightness_Correction : ICFilter
+    public class Brightness_Correction : iCFilter
     {
         private BrightnessCorrection _filter;
         private int _param;
@@ -54,7 +54,7 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
     }
-    public class Contrast_Correction : ICFilter
+    public class Contrast_Correction : iCFilter
     {
         private ContrastCorrection _filter;
         private int _param;
@@ -75,7 +75,7 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
     }
-    public class HueModifier_Correction : ICFilter
+    public class HueModifier_Correction : iCFilter
     {
         private HueModifier _filter;
         private int _param;
@@ -97,144 +97,15 @@ namespace Proj.Filters
         }
     }
 
-
-
-
-    public class Grayscale_filter : iFilter
-    {
-        Grayscale _filter;
-        public Grayscale_filter(double cr = 0.2125, double cg = 0.7154, double cb = 0.0721)
-        {
-            _filter = new Grayscale(cr, cg, cb);
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-            return _filter.Apply(input);
-        }
-
-    }
-    public class YCbCr_filter : iFilter
-    {
-        YCbCrFiltering _filter;
-        public YCbCr_filter(Range Cb, Range Cr, Range Y)
-        {
-            _filter = new YCbCrFiltering(Y, Cb, Cr);
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-            return _filter.Apply(input);
-        }
-
-    }
-    public class ColorFiltering_filter : iFilter
-    {
-        ColorFiltering _filter;
-        public ColorFiltering_filter(IntRange r, IntRange g, IntRange b)
-        {
-            _filter = new ColorFiltering(r, g, b);
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-            return _filter.Apply(input);
-        }
-
-    }
-
-    public class Invertion_filter : iFilter
-    {
-        Invert _filter;
-        public Invertion_filter()
-        {
-            _filter = new Invert();
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-            return _filter.Apply(input);
-        }
-
-    }
-    public class Masked_filter1 : iFilter
-    {
-        MaskedFilter _filter;
-        Bitmap _mask;
-        BrightnessCorrection _brightnessCorrection;
-        public Masked_filter1(int bCorrection)
-        {
-            _mask  = (Bitmap)Bitmap.FromFile("C:\\Users\\Andrew\\Desktop\\imaje\\main.png");
-            _mask = Grayscale.CommonAlgorithms.BT709.Apply(_mask);
-            _brightnessCorrection =new BrightnessCorrection(bCorrection);
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(_mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-            
-            resMask=_brightnessCorrection.Apply(resMask);
-
-            Invert invertFilter = new Invert();
-            resMask = invertFilter.Apply(resMask);
-
-            Subtract subtractFilter = new Subtract(resMask);
-            return subtractFilter.Apply(input);
-        }
-
-    }
-    public class Masked_filter2 : iFilter
-    {
-        MaskedFilter _filter;
-        Bitmap _mask;
-        BrightnessCorrection _brightnessCorrection;
-        public Masked_filter2(int bCorrection)
-        {
-            _mask = (Bitmap)Bitmap.FromFile("C:\\Users\\Andrew\\Desktop\\imaje\\main.png");
-            _mask = Grayscale.CommonAlgorithms.BT709.Apply(_mask);
-            _brightnessCorrection = new BrightnessCorrection(bCorrection);
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(_mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-
-            resMask = _brightnessCorrection.Apply(resMask);
-
-            Invert invertFilter = new Invert();
-            resMask = invertFilter.Apply(resMask);
-
-            Subtract subtractFilter = new Subtract(resMask);
-            return subtractFilter.Apply(input);
-        }
-
-    }
-    public class Resize_filter : iFilter
-    {
-       ResizeBicubic _filter;
-        public Resize_filter(int W,int H)
-        {
-            _filter = new ResizeBicubic(W, H);
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-            return _filter.Apply(input);
-        }
-
-    }
-   
+  
 
     public class Filter_factory
     {
-        private List<ICFilter> _correctionFiltersCollection;
+        private List<iCFilter> _correctionFiltersCollection;
         private List<iFilter> _photoFiltersCollection;
         public Filter_factory()
         {
-            _correctionFiltersCollection = new List<ICFilter>(){
+            _correctionFiltersCollection = new List<iCFilter>(){
                new Saturation_Correction(),
                new Brightness_Correction(),
                new Contrast_Correction(),
@@ -246,6 +117,9 @@ namespace Proj.Filters
                 new YCbCr_filter(new Range( -0.5f, 0.5f ),new Range( -0.5f, 0.5f ),new Range( 0, 0.9f )),
                 new ColorFiltering_filter(new IntRange(10,255),new IntRange(50,255),new IntRange(0,255)),
                 new Masked_filter1(100),
+                new Masked_filter2(150),
+                new Masked_filter3(0),
+                new Masked_filter4(0),
                 new Invertion_filter()
             };
         }
@@ -258,7 +132,7 @@ namespace Proj.Filters
 
 
 
-        public List<ICFilter> Corrections
+        public List<iCFilter> Corrections
         {
             get
             {
