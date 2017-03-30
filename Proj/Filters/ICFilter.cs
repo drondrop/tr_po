@@ -20,7 +20,7 @@ namespace Proj.Filters
         /// Apply filter on a image
         /// </summary>
         /// <param name="image"></param>
-        /// <returns></returns>
+        /// <returns>New image after changes</returns>
         Bitmap Apply(Bitmap image);
     }
 

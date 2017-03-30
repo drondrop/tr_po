@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Command\Filter_Command.cs" />
     <Compile Include="Command\UndoRedo.cs" />
+    <Compile Include="File\FileWorkWin.cs" />
+    <Compile Include="File\iFileWork.cs" />
     <Compile Include="Filters\iFilterImplementations.cs" />
     <Compile Include="Filters\Correction_Filters.cs" />
     <Compile Include="Filters\iCFilter.cs" />
