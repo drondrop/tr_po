@@ -1,17 +1,7 @@
-﻿using AForge;
-using AForge.Imaging;
-using AForge.Imaging.Filters;
-using Proj.Command;
-using Proj.Filters;
+﻿using Proj.Command;
 using Proj.ProcessImage;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -83,8 +73,8 @@ namespace Proj
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
            // iProcc.filters_correction.Corrections[i].param = mapping;
-             int i = listView1.HitTest(e.Location).Item.Index;
-            pictureBox2.Image = iProcc.DoPreView(new Filter_Command(iProcc.filters_correction.Filters[i]));
+            int i = listView1.HitTest(e.Location).Item.Index;
+            pictureBox2.Image = iProcc.DoWithUndo(new Filter_Command(iProcc.filters_correction.Filters[i]));
            
         }
     }

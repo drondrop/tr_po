@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace Proj.File
 {
-    public class FileWorkWin : iFileWork<Bitmap>
+    public class FileWorkWinHelper 
     {
-        public void SaveToFile(Bitmap inputToSave)
+        public static void SaveToFile(Bitmap inputToSave)
         {
             using (SaveFileDialog save = new SaveFileDialog())
             {
@@ -33,7 +33,7 @@ namespace Proj.File
             }
         }
 
-        public Bitmap LoadFromFile()
+        public static Bitmap LoadFromFile()
         {
             Bitmap ImgToReturn = null;
             using (OpenFileDialog open = new OpenFileDialog())

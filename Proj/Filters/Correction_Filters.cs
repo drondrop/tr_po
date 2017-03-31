@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Proj.Filters
 {
 
-    public class Saturation_Correction : iCFilter
+    public class Saturation_Correction : iParamFilter
     {
         private SaturationCorrection _filter;
         private float _param;
@@ -33,7 +33,7 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
     }
-    public class Brightness_Correction : iCFilter
+    public class Brightness_Correction : iParamFilter
     {
         private BrightnessCorrection _filter;
         private int _param;
@@ -54,7 +54,7 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
     }
-    public class Contrast_Correction : iCFilter
+    public class Contrast_Correction : iParamFilter
     {
         private ContrastCorrection _filter;
         private int _param;
@@ -75,7 +75,7 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
     }
-    public class HueModifier_Correction : iCFilter
+    public class HueModifier_Correction : iParamFilter
     {
         private HueModifier _filter;
         private int _param;
@@ -101,11 +101,11 @@ namespace Proj.Filters
 
     public class Filter_factory
     {
-        private List<iCFilter> _correctionFiltersCollection;
+        private List<iParamFilter> _correctionFiltersCollection;
         private List<iFilter> _photoFiltersCollection;
         public Filter_factory()
         {
-            _correctionFiltersCollection = new List<iCFilter>(){
+            _correctionFiltersCollection = new List<iParamFilter>(){
                new Saturation_Correction(),
                new Brightness_Correction(),
                new Contrast_Correction(),
@@ -132,7 +132,7 @@ namespace Proj.Filters
 
 
 
-        public List<iCFilter> Corrections
+        public List<iParamFilter> Corrections
         {
             get
             {

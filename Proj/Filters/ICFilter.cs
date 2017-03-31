@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-    public interface iCFilter : iFilter
+    public interface iParamFilter : iFilter
     {
         /// <summary>
         /// Value of filter intenssivety

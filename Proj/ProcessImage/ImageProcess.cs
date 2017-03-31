@@ -18,30 +18,25 @@ namespace Proj.ProcessImage
         protected T _originalImage;
         protected T _currentImage;
         protected UndoRedoKeper<T> _imageUndoRedoFactory;
-        protected FileWorkWin fw = new FileWorkWin();
-
-
+        protected ImageProcess()
+        {
+            _imageUndoRedoFactory = new UndoRedoKeper<T>();
+        }
     }
     public class ImageProcessWin :ImageProcess<Bitmap>, IProcessImage<Bitmap>
     {
-       
-        
-        
         public Filter_factory filters_correction = new  Filter_factory();
-        public ImageProcessWin()
-        {
-            _imageUndoRedoFactory = new UndoRedoKeper<Bitmap>();
-        }
+        
         public void  LoadFromFile()
         {
             _imageUndoRedoFactory.Reset();
-           _originalImage= fw.LoadFromFile();
+           _originalImage= FileWorkWinHelper.LoadFromFile();
            _currentImage = _originalImage;
             
         }
         public void SaveToFile()
         {
-            fw.SaveToFile(_currentImage);
+            FileWorkWinHelper.SaveToFile(_currentImage);
         }
 #region  IProcessImage 
 
@@ -50,8 +45,9 @@ namespace Proj.ProcessImage
             return _imageUndoRedoFactory.DoPreView(cmd, _currentImage);
         }
         public Bitmap DoWithUndo(ICommand<Bitmap> cmd)
-        {  
-            return _imageUndoRedoFactory.Do(cmd,_currentImage );
+        {
+            _currentImage = _imageUndoRedoFactory.Do(cmd, _currentImage);
+            return _currentImage;
         }
         public Bitmap UnDo(Bitmap input)
         {
@@ -63,10 +59,6 @@ namespace Proj.ProcessImage
             _currentImage=_imageUndoRedoFactory.Redo(_currentImage);
             return _currentImage;
         }
-
-
-
-
         public Bitmap OriginalImage { get { return _originalImage; } }
         public Bitmap CurrentImage { get { return _currentImage; } }
 #endregion

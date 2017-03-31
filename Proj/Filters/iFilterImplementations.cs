@@ -65,7 +65,7 @@ namespace Proj.Filters
     public class Masked_Helper
     {
         protected Bitmap _mask;
-        public Masked_Helper()
+        protected Masked_Helper()
         {
             _mask = (Bitmap)Bitmap.FromFile("C:\\Users\\Andrew\\Desktop\\imaje\\main.png");
             _mask = Grayscale.CommonAlgorithms.BT709.Apply(_mask);

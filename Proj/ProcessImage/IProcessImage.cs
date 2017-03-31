@@ -47,7 +47,4 @@ namespace Proj.ProcessImage
         T Redo(T input);
     }
    
-   
-
-
 }
