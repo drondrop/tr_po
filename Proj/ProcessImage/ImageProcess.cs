@@ -38,6 +38,18 @@ namespace Proj.ProcessImage
         {
             FileWorkWinHelper.SaveToFile(_currentImage);
         }
+        public List<string> filterNames { get { return filters_correction.Filters.Select(x => x.ToString()).ToList<string>(); } }
+        public ImageList GetImageFilters()
+        {
+            ImageList inmg = new ImageList();
+            inmg.ImageSize = new Size(64, 64);
+            foreach (var t in filters_correction.Filters)
+            {
+                // t.param=0.6;
+                inmg.Images.Add(t.Apply(CurrentImage));
+            }
+            return inmg;
+        }
 #region  IProcessImage 
 
         public Bitmap DoPreView(ICommand<Bitmap> cmd) 

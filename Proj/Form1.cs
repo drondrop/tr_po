@@ -29,18 +29,12 @@ namespace Proj
         }
         private void init()
         {
-            ImageList inmg = new ImageList();
-            inmg.ImageSize = new Size(64, 64);
-            foreach (var t in iProcc.filters_correction.Filters)
-            {
-               // t.param=0.6;
-               inmg.Images.Add( t.Apply(iProcc.CurrentImage));
-            }
-            listView1.LargeImageList = inmg;
+            
+            listView1.LargeImageList = iProcc.GetImageFilters();
             int tt=0;
-            foreach (var t in iProcc.filters_correction.Filters )
+            foreach (var t in iProcc.filterNames)
             {
-                listView1.Items.Add(t.ToString(), tt);
+                listView1.Items.Add(t, tt);
                     tt++;
             }
         }
