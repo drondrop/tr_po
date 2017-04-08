@@ -50,6 +50,17 @@ namespace Proj.ProcessImage
             }
             return inmg;
         }
+
+        public Filter_Command ttt(int i)
+        {
+            return new Filter_Command(filters_correction.Filters[i]);
+        }
+        public Filter_Command ttt(int i,double param)
+
+        {
+            filters_correction.Corrections[i].param = param;
+            return new Filter_Command(filters_correction.Corrections[i]);
+        }
 #region  IProcessImage 
 
         public Bitmap DoPreView(ICommand<Bitmap> cmd) 

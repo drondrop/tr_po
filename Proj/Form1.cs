@@ -44,8 +44,8 @@ namespace Proj
             //OilPainting --- нормальный Sepia
             //HueModifier filter = new AForge.Imaging.Filters.HueModifier((int)(359 * mapping));
             int i = 3;
-            iProcc.filters_correction.Corrections[i].param = mapping;
-            pictureBox2.Image = iProcc.DoPreView(new Filter_Command(iProcc.filters_correction.Corrections[i]));
+
+            pictureBox2.Image = iProcc.DoPreView(iProcc.ttt(i, mapping));
                // BrightnessCorrection filter = new BrightnessCorrection(trackBar1.Value-50);
             //pictureBox2.Image = iProcc.DoPreView(new Filter_Command(new BrightnessCorrection(trackBar1.Value - 50)));
                 //pictureBox2.Image = filter.Apply((Bitmap)pictureBox1.Image);
@@ -68,7 +68,7 @@ namespace Proj
         {
            // iProcc.filters_correction.Corrections[i].param = mapping;
             int i = listView1.HitTest(e.Location).Item.Index;
-            pictureBox2.Image = iProcc.DoWithUndo(new Filter_Command(iProcc.filters_correction.Filters[i]));
+            pictureBox2.Image = iProcc.DoWithUndo(iProcc.ttt(i));//new Filter_Command(iProcc.filters_correction.Filters[i])
            
         }
     }
