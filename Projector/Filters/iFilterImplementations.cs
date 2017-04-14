@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-    public class Grayscale_filter : iFilter
+    public class Grayscale_filter : iPhoFilter
     {
         Grayscale _filter;
         public Grayscale_filter(double cr = 0.2125, double cg = 0.7154, double cb = 0.0721)
@@ -22,7 +22,7 @@ namespace Proj.Filters
         }
 
     }
-    public class YCbCr_filter : iFilter
+    public class YCbCr_filter : iPhoFilter
     {
         YCbCrFiltering _filter;
         public YCbCr_filter(Range Cb, Range Cr, Range Y)
@@ -35,7 +35,7 @@ namespace Proj.Filters
         }
 
     }
-    public class ColorFiltering_filter : iFilter
+    public class ColorFiltering_filter : iPhoFilter
     {
         ColorFiltering _filter;
         public ColorFiltering_filter(IntRange r, IntRange g, IntRange b)
@@ -49,7 +49,7 @@ namespace Proj.Filters
 
     }
 
-    public class Invertion_filter : iFilter
+    public class Invertion_filter : iPhoFilter
     {
         Invert _filter;
         public Invertion_filter()
@@ -72,9 +72,9 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_filter1 : Masked_Helper, iFilter
+    public class Masked_filter1 : Masked_Helper
     {
-        BrightnessCorrection _brightnessCorrection;
+        protected BrightnessCorrection _brightnessCorrection;
         public Masked_filter1(int bCorrection)
             : base()
         {
@@ -99,7 +99,18 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_filter2 : Masked_Helper, iFilter
+    public class Masked_filter10 : Masked_filter1, iPhoFilter
+    {
+       
+        public Masked_filter10()
+            : base(19)
+        {
+           
+        }
+       
+
+    }
+    public class Masked_filter2 : Masked_Helper, iPhoFilter
     {
         BrightnessCorrection _brightnessCorrection;
         public Masked_filter2(int bCorrection)
@@ -126,7 +137,7 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_filter3 : Masked_Helper, iFilter
+    public class Masked_filter3 : Masked_Helper, iPhoFilter
     {
         BrightnessCorrection _brightnessCorrection;
         public Masked_filter3(int bCorrection)
@@ -146,7 +157,7 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_filter4 : Masked_Helper, iFilter
+    public class Masked_filter4 : Masked_Helper, iPhoFilter
     {
         BrightnessCorrection _brightnessCorrection;
         public Masked_filter4(int bCorrection)
@@ -166,7 +177,7 @@ namespace Proj.Filters
         }
 
     }
-    public class Resize_filter : iFilter
+    public class Resize_filter 
     {
         ResizeBicubic _filter;
         public Resize_filter(int W, int H)

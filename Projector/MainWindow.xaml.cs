@@ -46,6 +46,7 @@ namespace Projector
         {
             iProcc.UnDo(iProcc.CurrentImage);
             image.Source = iProcc.CurrentImageSource;
+
         }
         private void MenuEditRedo_Click(object sender, EventArgs e)
         {
@@ -84,10 +85,11 @@ namespace Projector
             {
                 _iProcc = iProcc;
                 var ttt= iProcc.GetImageFilters();
-                var tttt = iProcc.filterNames;
+                var tttt = iProcc.PhoFilterNames;
                 for(int i =0;i<tttt.Count;i++)
                 {
-                    m_lstProducts.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ttt[i]), Title = tttt[i] });//new BitmapImage(new Uri("D:\\study\\master\\2 semestr\\tr_po\\project\\tr_po-interface\\Projector\\1.jpg"))
+                    m_lstProducts.Add(new ListItem() 
+                    { ImageData = Bitmap2BitmapImage(ttt[i]), Title = tttt[i] });
                 }
                 
             }

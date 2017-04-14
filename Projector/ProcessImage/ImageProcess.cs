@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,6 +29,13 @@ namespace Proj.ProcessImage
     public class ImageProcessWin : ImageProcess<Bitmap>, IProcessImage<Bitmap>
     {
         public Filter_factory filters_correction = new Filter_factory();
+        private Factory<iPhoFilter> _iPhoFilterFactory = new Factory<iPhoFilter>();
+        private Factory<iParamFilter> _iParamFilterFactory = new Factory<iParamFilter>();
+        public ImageProcessWin()
+        {
+            _iPhoFilterFactory.ScanForT(Assembly.GetExecutingAssembly());
+            _iParamFilterFactory.ScanForT(Assembly.GetExecutingAssembly());
+        }
 
         public void LoadFromFile()
         {
@@ -36,24 +44,31 @@ namespace Proj.ProcessImage
             _currentImage = _originalImage;
 
         }
+
         public void SaveToFile()
         {
             FileWorkWinHelper.SaveToFile(_currentImage);
         }
-        public List<string> filterNames { get { return filters_correction.Filters.Select(x => x.ToString()).ToList<string>(); } }
+
+        public List<string> PhoFilterNames { get { return _iPhoFilterFactory.getAllTypeNames; } }
+
+
+
         public List<Bitmap> GetImageFilters()
         {
             List<Bitmap> inmg = new List<Bitmap>();
           //  inmg.ImageSize = new System.Drawing.Size(64, 64);
-            foreach (var t in filters_correction.Filters)
+            foreach (var t in _iPhoFilterFactory.getAllTypeNames)
             {
                 // t.param=0.6;
-                inmg.Add(t.Apply(CurrentImage));
+                inmg.Add(_iPhoFilterFactory.Create(t).Apply(CurrentImage));
             }
             // ImageL
             return inmg;
         }
-
+        ////
+        /// ////////////////////////////
+        /////
         public Filter_Command ttt(int i)
         {
             return new Filter_Command(filters_correction.Filters[i]);
@@ -63,6 +78,21 @@ namespace Proj.ProcessImage
             filters_correction.Corrections[i].param = param;
             return new Filter_Command(filters_correction.Corrections[i]);
         }
+
+        public Filter_Command CreateICommand(string FilterName)
+        {
+            return new Filter_Command(_iPhoFilterFactory.Create(FilterName));
+        }
+        public Filter_Command CreateICommand(string FilterName, double param)
+        {
+            var _filtr = _iParamFilterFactory.Create(FilterName);
+            _filtr.param = param;
+            return new Filter_Command(_filtr);
+        }
+        
+        /// ////////////
+       
+
         #region  IProcessImage
 
         public Bitmap DoPreView(ICommand<Bitmap> cmd)
@@ -105,5 +135,56 @@ namespace Proj.ProcessImage
                   System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
         }
 
+    }
+    public class Factory<T> where T : class
+    {
+        private Dictionary<string, Type> _foundTemplTypes =
+            new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
+
+        public List<string> getAllTypeNames
+        {
+            get
+            {
+                var Keys = _foundTemplTypes.Keys.ToList<string>();
+                return Keys;
+            }
+        }
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="assemblies"></param>
+        public void ScanForT(params Assembly[] assemblies) 
+        {
+            var typeT = typeof(T);
+            
+            foreach (var assembly in assemblies)
+            {
+
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (!typeT.IsAssignableFrom(type)
+                        
+                        || type.IsAbstract
+                        || type.IsInterface)
+                        continue;
+                    _foundTemplTypes.Add(type.Name, type);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Create some food!
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T Create(string name)
+        {
+            Type type;
+            if (!_foundTemplTypes.TryGetValue(name, out type))
+                throw new ArgumentException("Failed to find T named '" + name + "'.");
+
+            return (T)Activator.CreateInstance(type);
+        }
     }
 }

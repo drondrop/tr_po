@@ -14,6 +14,14 @@ namespace Proj.Filters
         /// </summary>
         double param { set; }
     }
+    public interface iPhoFilter : iFilter
+    {
+        /// <summary>
+        /// Apply filter on a image
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns>New image after changes</returns>
+    }
     public interface iFilter
     {
         /// <summary>
