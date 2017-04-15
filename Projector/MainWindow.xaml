@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <Menu >
             <MenuItem Header="Файл">
-                <MenuItem Header="Загрузить" Click="MenuItem_Open_File"></MenuItem>
+                <MenuItem Header="Загрузить" Command="{Binding ClickCommand}"></MenuItem>
                 <MenuItem Header="Сохранить"></MenuItem>
                 <MenuItem Header="Скачать"></MenuItem>
                 <MenuItem Header="О программе"></MenuItem>
@@ -25,7 +25,7 @@
                 <MenuItem Header="Назад"></MenuItem>
             </MenuItem>
         </Menu>
-        <Image Source="{Binding ButtonImage}" x:Name="image" Height="244" Margin="130,10,130,0" Grid.Row="1" VerticalAlignment="Top">
+        <Image Source="{Binding ButtonImage, UpdateSourceTrigger=PropertyChanged}" x:Name="image" Height="244" Margin="130,10,130,0" Grid.Row="1" VerticalAlignment="Top">
             
         </Image>
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="250" Margin="10,314,0,0" Grid.Row="1" VerticalAlignment="Top" Width="447">
