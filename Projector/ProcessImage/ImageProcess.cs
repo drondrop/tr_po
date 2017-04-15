@@ -69,16 +69,7 @@ namespace Proj.ProcessImage
         ////
         /// ////////////////////////////
         /////
-        public Filter_Command ttt(int i)
-        {
-            return new Filter_Command(filters_correction.Filters[i]);
-        }
-        public Filter_Command ttt(int i, double param)
-        {
-            filters_correction.Corrections[i].param = param;
-            return new Filter_Command(filters_correction.Corrections[i]);
-        }
-
+      
         public Filter_Command CreateICommand(string FilterName)
         {
             return new Filter_Command(_iPhoFilterFactory.Create(FilterName));

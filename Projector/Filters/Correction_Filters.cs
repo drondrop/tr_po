@@ -113,13 +113,12 @@ namespace Proj.Filters
             };
             _photoFiltersCollection = new List<iFilter>(){
                 new Grayscale_filter(),
-                new Grayscale_filter(0.2125,0.7154,0.0721),
-                new YCbCr_filter(new Range( -0.5f, 0.5f ),new Range( -0.5f, 0.5f ),new Range( 0, 0.9f )),
-                new ColorFiltering_filter(new IntRange(10,255),new IntRange(50,255),new IntRange(0,255)),
-                new Masked_filter10(),
-                new Masked_filter2(150),
-                new Masked_filter3(0),
-                new Masked_filter4(0),
+                new YCbCr_filter(),
+                new ColorFiltering_filter(),
+                new Masked_filter1(),
+                new Masked_filter2(),
+                new Masked_filter3(),
+                new Masked_filter4(),
                 new Invertion_filter()
             };
         }

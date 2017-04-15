@@ -36,7 +36,7 @@ namespace Projector
         private void MenuItem_Open_File(object sender, RoutedEventArgs e)
         {
             iProcc.LoadFromFile();
-            image.Source = iProcc.CurrentImageSource;
+           // image.Source = iProcc.CurrentImageSource;
             // var tt = iProcc.GetImageFilters();
             ViewModel vmProduct = new ViewModel(iProcc);
             this.DataContext = vmProduct;
@@ -113,6 +113,11 @@ namespace Projector
             {
                 get { return m_lstProducts; }
             }
+            public BitmapImage ButtonImage
+            {
+                get { return Bitmap2BitmapImage(_iProcc.CurrentImage); }
+            }
+            
         }
 
        

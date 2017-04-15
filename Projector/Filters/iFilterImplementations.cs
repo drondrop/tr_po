@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-    public class Grayscale_filter : iPhoFilter
+    public class Grayscale_filterBase 
     {
         Grayscale _filter;
-        public Grayscale_filter(double cr = 0.2125, double cg = 0.7154, double cb = 0.0721)
+        public Grayscale_filterBase(double cr = 0.2125, double cg = 0.7154, double cb = 0.0721)
         {
             _filter = new Grayscale(cr, cg, cb);
         }
@@ -22,10 +22,18 @@ namespace Proj.Filters
         }
 
     }
-    public class YCbCr_filter : iPhoFilter
+    public class Grayscale_filter :Grayscale_filterBase, iPhoFilter
+    {
+        public Grayscale_filter()
+            : base(0.2125, 0.7154, 0.0721)
+        {
+            
+        }
+    }
+    public class YCbCr_filterBase 
     {
         YCbCrFiltering _filter;
-        public YCbCr_filter(Range Cb, Range Cr, Range Y)
+        public YCbCr_filterBase(Range Cb, Range Cr, Range Y)
         {
             _filter = new YCbCrFiltering(Y, Cb, Cr);
         }
@@ -35,10 +43,19 @@ namespace Proj.Filters
         }
 
     }
-    public class ColorFiltering_filter : iPhoFilter
+    public class YCbCr_filter : YCbCr_filterBase,iPhoFilter
+    {
+        
+        public YCbCr_filter()
+            : base(new Range(-0.5f, 0.5f), new Range(-0.5f, 0.5f), new Range(0, 0.9f))
+        {
+           
+        }
+    }
+    public class ColorFiltering_filterBase 
     {
         ColorFiltering _filter;
-        public ColorFiltering_filter(IntRange r, IntRange g, IntRange b)
+        public ColorFiltering_filterBase(IntRange r, IntRange g, IntRange b)
         {
             _filter = new ColorFiltering(r, g, b);
         }
@@ -47,6 +64,13 @@ namespace Proj.Filters
             return _filter.Apply(input);
         }
 
+    }
+    public class ColorFiltering_filter : ColorFiltering_filterBase,iPhoFilter
+    {
+        public ColorFiltering_filter()
+            : base(new IntRange(10, 255), new IntRange(50, 255), new IntRange(0, 255))
+        {
+        } 
     }
 
     public class Invertion_filter : iPhoFilter
@@ -62,7 +86,8 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_Helper
+    #region masked
+    public abstract class Masked_Helper
     {
         protected Bitmap _mask;
         protected Masked_Helper()
@@ -72,10 +97,10 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_filter1 : Masked_Helper
+    public class Masked_filterBase1 : Masked_Helper
     {
         protected BrightnessCorrection _brightnessCorrection;
-        public Masked_filter1(int bCorrection)
+        public Masked_filterBase1(int bCorrection)
             : base()
         {
             _brightnessCorrection = new BrightnessCorrection(bCorrection);
@@ -99,10 +124,77 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_filter10 : Masked_filter1, iPhoFilter
+    public class Masked_filterBase2 : Masked_Helper
+    {
+        BrightnessCorrection _brightnessCorrection;
+        public Masked_filterBase2(int bCorrection)
+            : base()
+        {
+            _brightnessCorrection = new BrightnessCorrection(bCorrection);
+        }
+        public Bitmap Apply(Bitmap input)
+        {
+
+            var resize = new Resize_filter(input.Width, input.Height);
+            var resMask = resize.Apply(_mask);
+            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
+            resMask = grayscaleToRGBFilter.Apply(resMask);
+
+
+            resMask = _brightnessCorrection.Apply(resMask);
+
+            Invert invertFilter = new Invert();
+            resMask = invertFilter.Apply(resMask);
+
+            Add subtractFilter = new Add(resMask);
+            return subtractFilter.Apply(input);
+        }
+
+    }
+    public class Masked_filterBase3 : Masked_Helper 
+    {
+        BrightnessCorrection _brightnessCorrection;
+        public Masked_filterBase3(int bCorrection)
+            : base()
+        {
+            _brightnessCorrection = new BrightnessCorrection(bCorrection);
+        }
+        public Bitmap Apply(Bitmap input)
+        {
+            var resize = new Resize_filter(input.Width, input.Height);
+            var resMask = resize.Apply(_mask);
+            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
+            resMask = grayscaleToRGBFilter.Apply(resMask);
+            resMask = _brightnessCorrection.Apply(resMask);
+            Subtract subtractFilter = new Subtract(resMask);
+            return subtractFilter.Apply(input);
+        }
+
+    }
+    public class Masked_filterBase4 : Masked_Helper 
+    {
+        BrightnessCorrection _brightnessCorrection;
+        public Masked_filterBase4(int bCorrection)
+            : base()
+        {
+            _brightnessCorrection = new BrightnessCorrection(bCorrection);
+        }
+        public Bitmap Apply(Bitmap input)
+        {
+            var resize = new Resize_filter(input.Width, input.Height);
+            var resMask = resize.Apply(_mask);
+            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
+            resMask = grayscaleToRGBFilter.Apply(resMask);
+            resMask = _brightnessCorrection.Apply(resMask);
+            Add subtractFilter = new Add(resMask);
+            return subtractFilter.Apply(input);
+        }
+
+    }
+    public class Masked_filter1 : Masked_filterBase1, iPhoFilter
     {
        
-        public Masked_filter10()
+        public Masked_filter1()
             : base(19)
         {
            
@@ -110,73 +202,34 @@ namespace Proj.Filters
        
 
     }
-    public class Masked_filter2 : Masked_Helper, iPhoFilter
+    public class Masked_filter2 : Masked_filterBase2, iPhoFilter
+    {   
+        public Masked_filter2()
+            : base(150)
+        {
+            
+        }
+    }
+    public class Masked_filter3 : Masked_filterBase3, iPhoFilter
     {
-        BrightnessCorrection _brightnessCorrection;
-        public Masked_filter2(int bCorrection)
-            : base()
+        
+        public Masked_filter3()
+            : base(0)
         {
-            _brightnessCorrection = new BrightnessCorrection(bCorrection);
+            
         }
-        public Bitmap Apply(Bitmap input)
-        {
-
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(_mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-
-            resMask = _brightnessCorrection.Apply(resMask);
-
-            Invert invertFilter = new Invert();
-            resMask = invertFilter.Apply(resMask);
-
-            Add subtractFilter = new Add(resMask);
-            return subtractFilter.Apply(input);
-        }
+       
 
     }
-    public class Masked_filter3 : Masked_Helper, iPhoFilter
-    {
-        BrightnessCorrection _brightnessCorrection;
-        public Masked_filter3(int bCorrection)
-            : base()
+    public class Masked_filter4 : Masked_filterBase4, iPhoFilter
+    {   
+        public Masked_filter4()
+            : base(0)
         {
-            _brightnessCorrection = new BrightnessCorrection(bCorrection);
+           
         }
-        public Bitmap Apply(Bitmap input)
-        {
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(_mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-            resMask = _brightnessCorrection.Apply(resMask);
-            Subtract subtractFilter = new Subtract(resMask);
-            return subtractFilter.Apply(input);
-        }
-
     }
-    public class Masked_filter4 : Masked_Helper, iPhoFilter
-    {
-        BrightnessCorrection _brightnessCorrection;
-        public Masked_filter4(int bCorrection)
-            : base()
-        {
-            _brightnessCorrection = new BrightnessCorrection(bCorrection);
-        }
-        public Bitmap Apply(Bitmap input)
-        {
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(_mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-            resMask = _brightnessCorrection.Apply(resMask);
-            Add subtractFilter = new Add(resMask);
-            return subtractFilter.Apply(input);
-        }
-
-    }
+    #endregion
     public class Resize_filter 
     {
         ResizeBicubic _filter;
