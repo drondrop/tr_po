@@ -123,13 +123,13 @@ namespace Projector.ViewModels
         #endregion
 
         #region ICommandExecution
+        #region OpenCommand
         private ICommand _OpenCommand;
         public ICommand OpenCommand
         {
             get
             {
-               return _OpenCommand ?? (_OpenCommand = new RelayCommand(param => OpenCommandExecute(),
-                                                       param => OpenCommandCanExecute));
+               return _OpenCommand ?? (_OpenCommand = new RelayCommand(param => OpenCommandExecute(),param => OpenCommandCanExecute));
                 
             }
         }
@@ -151,13 +151,33 @@ namespace Projector.ViewModels
             }
             ProductList = ttttt;
         }
+        #endregion
+
+        #region FilterApplyCommand
+        private ICommand _FilterApplyCommand;
+        public ICommand FilterApplyCommand
+        {
+            get
+            {
+                return _FilterApplyCommand ?? (_FilterApplyCommand = new RelayCommand(param => FilterApplyCommandExecute(param), param => FilterApplyCommandCanExecute));
+
+            }
+        }
+        private bool FilterApplyCommandCanExecute
+        {
+            get { return true; }
+        }
+        private void FilterApplyCommandExecute(object param)
+        {
+            var ttt = param as ListItem;
+           _iProcc.DoWithUndo(_iProcc.CreateICommand(ttt.Title));
+            ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
+
+        }
+        #endregion
 
 
-
-       // public DelegateCommand<ItemClickEventArgs> ItemClickedCommand { get; set; }
-       // private void OnItemClicked(ItemClickEventArgs args)
-        //{
-        //}
+      
         #endregion
     }
 
@@ -166,7 +186,7 @@ namespace Projector.ViewModels
     {
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
-
+        
         public event EventHandler CanExecuteChanged
         {
             add
@@ -212,40 +232,5 @@ namespace Projector.ViewModels
 
 
 
-    public class DelegateCommand<T> : ICommand
-    {
-        private readonly Action<T> executeAction;
-        Func<object, bool> canExecute;
-
-        public event EventHandler CanExecuteChanged;
-
-        public DelegateCommand(Action<T> executeAction)
-            : this(executeAction, null)
-        {
-        }
-
-        public DelegateCommand(Action<T> executeAction, Func<object, bool> canExecute)
-        {
-            this.executeAction = executeAction;
-            this.canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return canExecute == null ? true : canExecute(parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            executeAction((T)parameter);
-        }
-        public void RaiseCanExecuteChanged()
-        {
-            EventHandler handler = this.CanExecuteChanged;
-            if (handler != null)
-            {
-                handler(this, new EventArgs());
-            }
-        }
-    }
+    
 }

@@ -35,13 +35,12 @@
                     <ListView ItemsSource="{Binding ProductList}" x:Name="listView" HorizontalAlignment="Right" Margin="0,10,10,10" Width="405" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
-
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                         <ListView.ItemTemplate >
                             <DataTemplate >
-                                <Button Command="{Binding EnDoCommand}">
+                                <Button Command="{Binding ElementName=listView, Path=DataContext.FilterApplyCommand}" CommandParameter="{Binding}" >
                                     <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                         <Image Source="{Binding ImageData}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" Width="55" Height="40" />
                                         <TextBlock Text="{Binding Title}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
