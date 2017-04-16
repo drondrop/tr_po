@@ -92,7 +92,7 @@ namespace Proj.Filters
         protected Bitmap _mask;
         protected Masked_Helper()
         {
-            _mask = (Bitmap)Bitmap.FromFile("C:\\Users\\Andrew\\Desktop\\imaje\\main.png");
+            _mask = (Bitmap)Bitmap.FromFile("D:\\111.jpg");
             _mask = Grayscale.CommonAlgorithms.BT709.Apply(_mask);
         }
 

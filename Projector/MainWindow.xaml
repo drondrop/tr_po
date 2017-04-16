@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Projector"
         mc:Ignorable="d"
         
-        Title="Projector" Height="630" Width="475" Background="Gray" WindowStartupLocation="CenterScreen">
+        Title="Projector" Height="650" Width="500" Background="Gray" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
@@ -14,25 +14,24 @@
         </Grid.RowDefinitions>
         <Menu >
             <MenuItem Header="Файл">
-                <MenuItem Header="Загрузить" Command="{Binding OpenCommand}"></MenuItem>
+                <MenuItem Header="Открыть" Command="{Binding OpenCommand}"></MenuItem>
                 <MenuItem Header="Сохранить" Command="{Binding SaveCommand}"></MenuItem>
-                <MenuItem Header="Скачать"></MenuItem>
                 <MenuItem Header="О программе" Command="{Binding AboutCommand}"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Выход" Command="{Binding ExitCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Header="Изменить">
-                <MenuItem Header="Вперед" Command="{Binding ReDoCommand}"></MenuItem>
-                <MenuItem Header="Назад" Command="{Binding EnDoCommand}"></MenuItem>
+                <MenuItem Header="Вернуть" Command="{Binding ReDoCommand}"></MenuItem>
+                <MenuItem Header="Отменить" Command="{Binding EnDoCommand}"></MenuItem>
             </MenuItem>
         </Menu>
         <Image Source="{Binding ButtonImage, UpdateSourceTrigger=PropertyChanged}" x:Name="image" Height="244" Margin="130,10,130,0" Grid.Row="1" VerticalAlignment="Top">
 
         </Image>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="250" Margin="10,314,0,0" Grid.Row="1" VerticalAlignment="Top" Width="447">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="270" Margin="10,314,0,0" Grid.Row="1" VerticalAlignment="Top" Width="470">
             <TabItem Header="Фильтры">
                 <Grid Background="#FFE5E5E5" Margin="9,24,7,8">
-                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView" HorizontalAlignment="Right" Margin="0,10,10,10" Width="405" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView" HorizontalAlignment="Right" Margin="0,10,10,10" Width="425" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
@@ -42,7 +41,7 @@
                             <DataTemplate >
                                 <Button Command="{Binding ElementName=listView, Path=DataContext.FilterApplyCommand}" CommandParameter="{Binding}" >
                                     <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                        <Image Source="{Binding ImageData}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" Width="55" Height="40" />
+                                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill" Width="100" Height="100" />
                                         <TextBlock Text="{Binding Title}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
                                     </StackPanel>
                                 </Button>
@@ -60,7 +59,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Slider x:Name="slider" HorizontalAlignment="Left" Margin="130,268,0,0" Grid.Row="1" VerticalAlignment="Top" Width="207"/>
 
     </Grid>
 </Window>
