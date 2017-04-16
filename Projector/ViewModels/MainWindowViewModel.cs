@@ -1,8 +1,9 @@
-﻿using Proj.ProcessImage;
+﻿using Proj.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -13,8 +14,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-
-namespace Projector
+namespace Projector.ViewModels
 {
     public class ListItem
     {
@@ -45,7 +45,7 @@ namespace Projector
         public ViewModel()
         {
             _iProcc = new ImageProcessWin();
-            _canExecute = true;
+           // ItemClickedCommand = new DelegateCommand<ItemClickEventArgs>(OnItemClicked);
         }
         public ViewModel(ImageProcessWin iProcc)
         {
@@ -123,16 +123,21 @@ namespace Projector
         #endregion
 
         #region ICommandExecution
-        private ICommand _clickCommand;
-        public ICommand ClickCommand
+        private ICommand _OpenCommand;
+        public ICommand OpenCommand
         {
             get
             {
-                return _clickCommand ?? (_clickCommand = new CommandHandler(() => MyAction(), _canExecute));
+               return _OpenCommand ?? (_OpenCommand = new RelayCommand(param => OpenCommandExecute(),
+                                                       param => OpenCommandCanExecute));
+                
             }
         }
-        private bool _canExecute;
-        public void MyAction()
+        private bool OpenCommandCanExecute
+        {
+            get { return true; }
+        }
+        private void OpenCommandExecute()
         {
             _iProcc.LoadFromFile();
             ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
@@ -146,29 +151,101 @@ namespace Projector
             }
             ProductList = ttttt;
         }
+
+
+
+       // public DelegateCommand<ItemClickEventArgs> ItemClickedCommand { get; set; }
+       // private void OnItemClicked(ItemClickEventArgs args)
+        //{
+        //}
         #endregion
     }
 
-    public class CommandHandler : ICommand
+    
+    public class RelayCommand : ICommand
     {
-        private Action _action;
-        private bool _canExecute;
-        public CommandHandler(Action action, bool canExecute)
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
+
+        public event EventHandler CanExecuteChanged
         {
-            _action = action;
-            _canExecute = canExecute;
+            add
+            {
+                CommandManager.RequerySuggested += value;
+            }
+            remove
+            {
+                CommandManager.RequerySuggested -= value;
+            }
+        }
+
+        public RelayCommand(Action<object> execute)
+            : this(execute, (Predicate<object>)null)
+        {
+            this._execute = execute;
+        }
+
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        {
+            if (execute == null)
+                throw new ArgumentNullException("execute");
+            this._execute = execute;
+            this._canExecute = canExecute;
+        }
+
+        [DebuggerStepThrough]
+        public bool CanExecute(object parameter)
+        {
+            if (this._canExecute != null)
+                return this._canExecute(parameter);
+            else
+                return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            this._execute(parameter);
+        }
+    }
+
+
+
+
+
+    public class DelegateCommand<T> : ICommand
+    {
+        private readonly Action<T> executeAction;
+        Func<object, bool> canExecute;
+
+        public event EventHandler CanExecuteChanged;
+
+        public DelegateCommand(Action<T> executeAction)
+            : this(executeAction, null)
+        {
+        }
+
+        public DelegateCommand(Action<T> executeAction, Func<object, bool> canExecute)
+        {
+            this.executeAction = executeAction;
+            this.canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute;
+            return canExecute == null ? true : canExecute(parameter);
         }
-
-        public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)
         {
-            _action();
+            executeAction((T)parameter);
+        }
+        public void RaiseCanExecuteChanged()
+        {
+            EventHandler handler = this.CanExecuteChanged;
+            if (handler != null)
+            {
+                handler(this, new EventArgs());
+            }
         }
     }
 }

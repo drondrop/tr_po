@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Proj.ProcessImage
+namespace Proj.Command
 {
     interface IProcessImage<T>
     {

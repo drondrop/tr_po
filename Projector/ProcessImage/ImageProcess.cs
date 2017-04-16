@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
-namespace Proj.ProcessImage
+namespace Proj.Command
 {
    
     public abstract class ImageProcess<T>
@@ -28,11 +28,12 @@ namespace Proj.ProcessImage
     }
     public class ImageProcessWin : ImageProcess<Bitmap>, IProcessImage<Bitmap>
     {
-        public Filter_factory filters_correction = new Filter_factory();
+        
         private Factory<iPhoFilter> _iPhoFilterFactory = new Factory<iPhoFilter>();
         private Factory<iParamFilter> _iParamFilterFactory = new Factory<iParamFilter>();
         public ImageProcessWin()
         {
+
             _iPhoFilterFactory.ScanForT(Assembly.GetExecutingAssembly());
             _iParamFilterFactory.ScanForT(Assembly.GetExecutingAssembly());
         }
@@ -109,6 +110,7 @@ namespace Proj.ProcessImage
         public Bitmap CurrentImage { get { return _currentImage; } }
 
         #endregion
+
         public BitmapSource CurrentImageSource
         {
             get
@@ -165,10 +167,10 @@ namespace Proj.ProcessImage
         }
 
         /// <summary>
-        /// Create some food!
+        /// Create some T type!
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name"> name of type</param>
+        /// <returns>Instance of T type</returns>
         public T Create(string name)
         {
             Type type;
