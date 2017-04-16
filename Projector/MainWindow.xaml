@@ -51,11 +51,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Эффекты">
-                <Grid Background="#FFE5E5E5">
-                    <Slider x:Name="slider1" HorizontalAlignment="Left" Margin="30,36,0,0" VerticalAlignment="Top" Width="169"/>
-                    <Slider x:Name="slider2" HorizontalAlignment="Left" Margin="240,36,0,0" VerticalAlignment="Top" Width="169"/>
-                    <Label x:Name="label" Content="Яркость" HorizontalAlignment="Left" Margin="86,10,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label1" Content="Контраст" HorizontalAlignment="Left" Margin="300,10,0,0" VerticalAlignment="Top"/>
+                <Grid Background="#FFE5E5E5" Margin="9,24,7,8">
+                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView1" HorizontalAlignment="Right" Margin="0,10,10,10" Width="425" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+                        <ListView.ItemTemplate >
+                            <DataTemplate >
+                                <Slider x:Name="slider2" HorizontalAlignment="Left" Margin="0,36,0,0" VerticalAlignment="Top" Width="300"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
             </TabItem>
         </TabControl>
