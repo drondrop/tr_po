@@ -152,7 +152,65 @@ namespace Projector.ViewModels
             ProductList = ttttt;
         }
         #endregion
+        #region SaveCommand
+        private ICommand _SaveCommand;
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return _SaveCommand ?? (_SaveCommand = new RelayCommand(param => SaveCommandExecute(), param => SaveCommandCanExecute));
 
+            }
+        }
+        private bool SaveCommandCanExecute
+        {
+            get { return true; }
+        }
+        private void SaveCommandExecute()
+        {
+            _iProcc.SaveToFile();
+        }
+        #endregion
+        #region ReDoCommand
+        private ICommand _ReDoCommand;
+        public ICommand ReDoCommand
+        {
+            get
+            {
+                return _ReDoCommand ?? (_ReDoCommand = new RelayCommand(param => ReDoCommandExecute(), param => ReDoCommandCanExecute));
+
+            }
+        }
+        private bool ReDoCommandCanExecute
+        {
+            get { return true; }
+        }
+        private void ReDoCommandExecute()
+        {
+            _iProcc.Redo(_iProcc.CurrentImage);
+            ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
+        }
+        #endregion
+        #region UnDoCommand
+        private ICommand _UnDoCommand;
+        public ICommand EnDoCommand
+        {
+            get
+            {
+                return _UnDoCommand ?? (_UnDoCommand = new RelayCommand(param => UnDoCommandExecute(), param => UnDoCommandCanExecute));
+
+            }
+        }
+        private bool UnDoCommandCanExecute
+        {
+            get { return true; }
+        }
+        private void UnDoCommandExecute()
+        {
+            _iProcc.UnDo(_iProcc.CurrentImage);
+            ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
+        }
+        #endregion
         #region FilterApplyCommand
         private ICommand _FilterApplyCommand;
         public ICommand FilterApplyCommand
