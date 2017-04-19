@@ -28,10 +28,10 @@
         <Image Source="{Binding ButtonImage, UpdateSourceTrigger=PropertyChanged}" x:Name="image" Height="244" Margin="130,10,130,0" Grid.Row="1" VerticalAlignment="Top">
 
         </Image>
-        <TabControl x:Name="tabControl" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" Height="270" Margin="0,314,0,0" Grid.Row="1" VerticalAlignment="Top">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Height="270" Margin="0,314,0,0" Grid.Row="1" VerticalAlignment="Bottom" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
             <TabItem Header="Фильтры">
-                <Grid Background="#FFE5E5E5" Margin="9,24,7,8" >
-                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+                <Grid Background="#FFE5E5E5" Margin="9,24,7,8">
+                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView" HorizontalAlignment="Center" Margin="10,10,10,10" HorizontalContentAlignment="Center">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
