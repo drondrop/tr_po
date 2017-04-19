@@ -111,16 +111,7 @@ namespace Proj.Filters
                new Contrast_Correction(),
                new HueModifier_Correction()
             };
-            _photoFiltersCollection = new List<iFilter>(){
-                new Grayscale_filter(),
-                new YCbCr_filter(),
-                new ColorFiltering_filter(),
-                new Masked_filter1(),
-                new Masked_filter2(),
-                new Masked_filter3(),
-                new Masked_filter4(),
-                new Invertion_filter()
-            };
+           
         }
 
 
