@@ -85,6 +85,8 @@
     <Compile Include="Command\UndoRedo.cs" />
     <Compile Include="File\FileWorkWin.cs" />
     <Compile Include="File\iFileWork.cs" />
+    <Compile Include="Filters\effect_Helper.cs" />
+    <Compile Include="Filters\ImageCorrectionHelper.cs" />
     <Compile Include="Filters\Correction_Filters.cs" />
     <Compile Include="Filters\ICFilter.cs" />
     <Compile Include="Filters\iFilterImplementations.cs" />

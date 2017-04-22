@@ -1,15 +1,18 @@
 ﻿using AForge;
 using AForge.Imaging.Filters;
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-    public class Grayscale_filterBase 
+   
+    public class Grayscale_filterBase
     {
         Grayscale _filter;
         public Grayscale_filterBase(double cr = 0.2125, double cg = 0.7154, double cb = 0.0721)
@@ -22,15 +25,15 @@ namespace Proj.Filters
         }
 
     }
-    public class Grayscale_filter :Grayscale_filterBase
+    public class Grayscale_filter : Grayscale_filterBase
     {
         public Grayscale_filter()
             : base(0.2125, 0.7154, 0.0721)
         {
-            
+
         }
     }
-    public class YCbCr_filterBase 
+    public class YCbCr_filterBase
     {
         YCbCrFiltering _filter;
         public YCbCr_filterBase(Range Cb, Range Cr, Range Y)
@@ -45,14 +48,14 @@ namespace Proj.Filters
     }
     public class YCbCr_filter : YCbCr_filterBase
     {
-        
+
         public YCbCr_filter()
             : base(new Range(-0.5f, 0.5f), new Range(-0.5f, 0.5f), new Range(0, 0.9f))
         {
-           
+
         }
     }
-    public class ColorFiltering_filterBase 
+    public class ColorFiltering_filterBase
     {
         ColorFiltering _filter;
         public ColorFiltering_filterBase(IntRange r, IntRange g, IntRange b)
@@ -70,10 +73,10 @@ namespace Proj.Filters
         public ColorFiltering_filter()
             : base(new IntRange(10, 255), new IntRange(50, 255), new IntRange(0, 255))
         {
-        } 
+        }
     }
 
-    public class Invertion_filter 
+    public class Invertion_filter
     {
         Invert _filter;
         public Invertion_filter()
@@ -86,30 +89,31 @@ namespace Proj.Filters
         }
 
     }
+
     #region masked
     public abstract class Masked_Helper
     {
-        
-        protected  Bitmap Mask
+
+        protected Bitmap Mask
         {
             get { return _mask; }
         }
-        
-        private   Bitmap _mask;
+
+        private Bitmap _mask;
         protected Masked_Helper()
         {
             _mask = (Bitmap)Projector.Properties.Resources.main;
             _mask = Grayscale.CommonAlgorithms.BT709.Apply(_mask);
-            
+
             // Mask = _brightnessCorrection.Apply(Mask);
         }
-        protected static Bitmap BrightnessCorrection(Bitmap input,int CorrectionValue)
+        protected static Bitmap BrightnessCorrection(Bitmap input, int CorrectionValue)
         {
             var Correction = new BrightnessCorrection(CorrectionValue);
             return Correction.Apply(input);
-           
+
         }
-        protected static Bitmap Invert(Bitmap input)
+        public static Bitmap Invert(Bitmap input)
         {
             var Filter = new Invert();
             return Filter.Apply(input);
@@ -122,7 +126,7 @@ namespace Proj.Filters
         int _bCorrection;
         public Masked_filterBase1(int bCorrection)
             : base() { _bCorrection = bCorrection; }
-        
+
         public Bitmap Apply(Bitmap input)
         {
 
@@ -159,7 +163,7 @@ namespace Proj.Filters
         }
 
     }
-    public class Masked_filterBase3 : Masked_Helper 
+    public class Masked_filterBase3 : Masked_Helper
     {
         int _bCorrection;
         public Masked_filterBase3(int bCorrection)
@@ -172,14 +176,14 @@ namespace Proj.Filters
             resMask = grayscaleToRGBFilter.Apply(resMask);
 
             resMask = Masked_Helper.BrightnessCorrection(resMask, _bCorrection);
-            
+
 
             Subtract subtractFilter = new Subtract(resMask);
             return subtractFilter.Apply(input);
         }
 
     }
-    public class Masked_filterBase4 : Masked_Helper 
+    public class Masked_filterBase4 : Masked_Helper
     {
         int _bCorrection;
         public Masked_filterBase4(int bCorrection)
@@ -192,43 +196,43 @@ namespace Proj.Filters
             resMask = grayscaleToRGBFilter.Apply(resMask);
 
             resMask = Masked_Helper.BrightnessCorrection(resMask, _bCorrection);
-            
+
             Add subtractFilter = new Add(resMask);
             return subtractFilter.Apply(input);
         }
 
     }
-    public class Masked_filter1 : Masked_filterBase1, iPhoFilter
+    public class Masked_filter1 : Masked_filterBase1
     {
-       
+
         public Masked_filter1()
             : base(150) { }
-       
-       
+
+
 
     }
-    public class Masked_filter2 : Masked_filterBase2, iPhoFilter
-    {   
+    public class Masked_filter2 : Masked_filterBase2
+    {
         public Masked_filter2()
             : base(150) { }
-        
+
     }
-    public class Masked_filter3 : Masked_filterBase3, iPhoFilter
+    public class Masked_filter3 : Masked_filterBase3
     {
 
         public Masked_filter3()
             : base(0) { }
-       
+
 
     }
-    public class Masked_filter4 : Masked_filterBase4, iPhoFilter
+    public class Masked_filter4 : Masked_filterBase4
     {
         public Masked_filter4()
             : base(0)
         { }
     }
     #endregion
-    public class Resize_filter 
+    public class Resize_filter
     {
         ResizeBicubic _filter;
         public Resize_filter(int W, int H)
@@ -241,6 +245,7 @@ namespace Proj.Filters
         }
 
     }
+    #region filter for alex
     /// <summary>
     /// amaro - виньетка (затемнение краев), увеличение яркости/
     /// увеличение яркости только в центре,
@@ -251,26 +256,12 @@ namespace Proj.Filters
         public Aamaro() { }
         public Bitmap Apply(Bitmap input)
         {
-
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(Mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-            var sat = new SaturationCorrection(-0.1f);//регулировка насыщенности...
-            sat.ApplyInPlace(input);
-
-
-            var invresMask = Masked_Helper.Invert(resMask);
-            invresMask = Masked_Helper.BrightnessCorrection(invresMask, -150);//регулировка темноты веньетки 0 черно 
-            resMask = Masked_Helper.BrightnessCorrection(resMask, -100);//регулировка светлоты центра 0 бело
-            Subtract subtractFilter = new Subtract(invresMask);
-            Add add = new Add(resMask);
-            input = add.Apply(input);
-            return subtractFilter.Apply(input);
+            return effect_Helper.Vignette(input);//subtractFilter.Apply(input);
         }
+
     }
-//    rise - виньетка, смещение баланса белого в сторону желтого+розовый оттенок, уменьшение контраста
+   
+    //    rise - виньетка, смещение баланса белого в сторону желтого+розовый оттенок, уменьшение контраста
 
     //hudson - сильная виньетка, увеличение контраста и яркости, чуть розовый оттенок
 
@@ -279,13 +270,53 @@ namespace Proj.Filters
     //sierra - уменьшение насыщенности, смещение баланса белого в сторону желтого
 
     //lo-fi - виньетка, увеличение яркости и контраста
-
+    public class lo_fi : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectContrast(image, 10);
+            image = ImageCorrectionHelper.CorrectBrightness(image, 10);
+            return image;
+        }
+    }
     //earlybird - виньетка, уменьшение насыщенности, желтый оттенок
-
+    public class earlybird : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
+            return image;
+        }
+    }
     //sutro - виньетка, уменьшение яркости, насыщенности и контраста, чуть розовый оттенок
-
+    public class sutro : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.PaintMask(image, Color.FromArgb(20, 255, 105, 180));
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectContrast(image, -10);
+            image = ImageCorrectionHelper.CorrectBrightness(image, -10);
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            return image;
+        }
+    }
     //toaster - розовый оттенок, уменьшение контраста
+    public class toaster : iPhoFilter
+    {
 
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 105, 180));
+            image = ImageCorrectionHelper.CorrectContrast(image, -10);
+            return image;
+        }
+
+
+    }
     //brannan - виньетка, уменьшение насышенности и контраста
 
     //inkwell - насыщенность в ноль
@@ -297,21 +328,30 @@ namespace Proj.Filters
     //valensia - увеличение яркости, уменьшение контраста, чуть уменьшение насыщенности
 
     //nashville - голубой оттенок, увеличение яркости
+    public class nashville : iPhoFilter
+    {
+
+        public Bitmap Apply(Bitmap image)
+        {
+
+            return effect_Helper.PaintMask(image, Color.FromArgb(30, 0, 0, 255));
+        }
+
+
+
+    }
 
     //1977 - розовый оттенок, чуть уменьшение насыщенности
 
     //kelvin - увеличение яркости, контраста, желтый оттенок
     public class kelvin : iPhoFilter
-   {
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            return effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0)); ;
+        }
 
-       public Bitmap Apply(Bitmap image)
-       {
-           var contF = new ContrastCorrection(10);
-           var brF = new BrightnessCorrection(10);
-           var hueF = new HueModifier(60);
-           return hueF.Apply(brF.Apply(contF.Apply(image)));
-       }
+    }
 
-      
-   }
+    #endregion
 }
