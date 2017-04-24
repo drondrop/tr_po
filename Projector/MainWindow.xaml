@@ -25,13 +25,13 @@
                 <MenuItem Header="Отменить" Command="{Binding EnDoCommand}"></MenuItem>
             </MenuItem>
         </Menu>
-        <Image Source="{Binding ButtonImage, UpdateSourceTrigger=PropertyChanged}" x:Name="image" Margin="130,30,130,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+        <Image Source="{Binding ButtonImage, UpdateSourceTrigger=PropertyChanged}" x:Name="image" Margin="80,0,80,205" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="390">
 
         </Image>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Margin="0,390,0,0" Grid.Row="1" Height="200" HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Grid.Row="1" Height="200" HorizontalContentAlignment="Stretch" VerticalAlignment="Bottom">
             <TabItem Header="Фильтры">
-                <Grid Background="#FFE5E5E5" Margin="9,24,7,8">
-                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView" HorizontalAlignment="Center" Margin="10,10,10,10" HorizontalContentAlignment="Center">
+                <Grid Background="#FFE5E5E5" Margin="9,9,7,8">
+                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView" HorizontalAlignment="Center" Margin="10,10,10,10" HorizontalContentAlignment="Center" Height="130">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
@@ -40,8 +40,8 @@
                         <ListView.ItemTemplate >
                             <DataTemplate >
                                 <Button Command="{Binding ElementName=listView, Path=DataContext.FilterApplyCommand}" CommandParameter="{Binding}" Focusable="False">
-                                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill" Width="100" Height="100" />
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill" Width="80" Height="80" />
                                         <TextBlock Text="{Binding Title}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
                                     </StackPanel>
                                 </Button>
