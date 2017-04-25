@@ -1,17 +1,10 @@
 ﻿using AForge;
 using AForge.Imaging.Filters;
-
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Proj.Filters
 {
-   
+
     public class Grayscale_filterBase
     {
         Grayscale _filter;
@@ -249,7 +242,7 @@ namespace Proj.Filters
     /// <summary>
     /// amaro - виньетка (затемнение краев), увеличение яркости/
     /// увеличение яркости только в центре,
-    /// маленькое уменьшение насыщенностии
+    /// маленькое уменьшение насыщенности
     /// </summary>
     public class Aamaro : Masked_Helper, iPhoFilter
     {
@@ -260,14 +253,53 @@ namespace Proj.Filters
         }
 
     }
-   
-    //    rise - виньетка, смещение баланса белого в сторону желтого+розовый оттенок, уменьшение контраста
+    //rise - виньетка, смещение баланса белого в сторону желтого+розовый оттенок, уменьшение контраста	
+    public class rise : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectContrast(image, -10);
+            image = effect_Helper.PaintMask(image, Color.FromArgb(255, 170, 170, 1));
+            return image;
+        }
+    }
 
     //hudson - сильная виньетка, увеличение контраста и яркости, чуть розовый оттенок
-
+    public class hudson : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectContrast(image, 10);
+            image = ImageCorrectionHelper.CorrectBrightness(image, 10);
+            image = effect_Helper.PaintMask(image, Color.FromArgb(255, 155, 145, 1));
+            return image;
+        }
+    }
     //x pro II - сильная виньетка, увеличение контраста и насыщенности
+    public class x_pro_II : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectContrast(image, 15);
+            image = ImageCorrectionHelper.CorrectSaturation(image, 0.1f);
+            return image;
+        }
+    }
 
     //sierra - уменьшение насыщенности, смещение баланса белого в сторону желтого
+    public class sierra : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
+            return image;
+        }
+    }
+
 
     //lo-fi - виньетка, увеличение яркости и контраста
     public class lo_fi : iPhoFilter
@@ -318,39 +350,96 @@ namespace Proj.Filters
 
     }
     //brannan - виньетка, уменьшение насышенности и контраста
+    public class brannan : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectContrast(image, -10);
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            return image;
+        }
+    }
 
     //inkwell - насыщенность в ноль
+    public class inkwell : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = ImageCorrectionHelper.CorrectSaturation(image, -1f);
+            return image;
+        }
+    }
 
     //walden - увеличение яркости, голубой оттенок
+    public class walden : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = ImageCorrectionHelper.CorrectBrightness(image, 15);
+            return effect_Helper.PaintMask(image, Color.FromArgb(30, 0, 0, 255));
+            return image;
+        }
+    }
 
     //hefe - желтый оттенок, виньетка, чуть увеличение яркости
+    public class hefe : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.Vignette(image);
+            image = ImageCorrectionHelper.CorrectBrightness(image, 5);
+            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
+            return image;
+        }
+    }
 
     //valensia - увеличение яркости, уменьшение контраста, чуть уменьшение насыщенности
+    public class valensia : iPhoFilter
+    {
+        public Bitmap Apply(Bitmap image)
+        {
+            image = ImageCorrectionHelper.CorrectContrast(image, -10);
+            image = ImageCorrectionHelper.CorrectBrightness(image, 10);
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            return image;
+        }
+    }
+
 
     //nashville - голубой оттенок, увеличение яркости
     public class nashville : iPhoFilter
     {
-
         public Bitmap Apply(Bitmap image)
         {
-
-            return effect_Helper.PaintMask(image, Color.FromArgb(30, 0, 0, 255));
+            image = ImageCorrectionHelper.CorrectBrightness(image, 10);
+            return effect_Helper.PaintMask(image, Color.FromArgb(1, 107, 216, 155));
         }
-
-
-
     }
 
     //1977 - розовый оттенок, чуть уменьшение насыщенности
+
+    public class toaster : iPhoFilter
+    {
+
+        public Bitmap Apply(Bitmap image)
+        {
+            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 105, 180));
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            return image;
+        }
+    }
+
 
     //kelvin - увеличение яркости, контраста, желтый оттенок
     public class kelvin : iPhoFilter
     {
         public Bitmap Apply(Bitmap image)
         {
+            image = ImageCorrectionHelper.CorrectContrast(image, 10);
+            image = ImageCorrectionHelper.CorrectBrightness(image, 10);
             return effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0)); ;
         }
-
     }
 
     #endregion
