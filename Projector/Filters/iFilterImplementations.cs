@@ -253,14 +253,14 @@ namespace Proj.Filters
         }
 
     }
-    //rise - виньетка, смещение баланса белого в сторону желтого+розовый оттенок, уменьшение контраста	
+    //rise - виньетка, смещение баланса белого в сторону желтого, уменьшение контраста	
     public class rise : iPhoFilter
     {
         public Bitmap Apply(Bitmap image)
         {
             image = effect_Helper.Vignette(image);
             image = ImageCorrectionHelper.CorrectContrast(image, -10);
-            image = effect_Helper.PaintMask(image, Color.FromArgb(255, 170, 170, 1));
+            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
             return image;
         }
     }
@@ -273,7 +273,7 @@ namespace Proj.Filters
             image = effect_Helper.Vignette(image);
             image = ImageCorrectionHelper.CorrectContrast(image, 10);
             image = ImageCorrectionHelper.CorrectBrightness(image, 10);
-            image = effect_Helper.PaintMask(image, Color.FromArgb(255, 155, 145, 1));
+            image = effect_Helper.PaintMask(image, Color.FromArgb(20, 255, 105, 180));
             return image;
         }
     }
@@ -301,13 +301,13 @@ namespace Proj.Filters
     }
 
 
-    //lo-fi - виньетка, увеличение яркости и контраста
+    //lo-fi - виньетка, увеличение яркости и уменьшение контраста
     public class lo_fi : iPhoFilter
     {
         public Bitmap Apply(Bitmap image)
         {
             image = effect_Helper.Vignette(image);
-            image = ImageCorrectionHelper.CorrectContrast(image, 10);
+            image = ImageCorrectionHelper.CorrectContrast(image, -10);
             image = ImageCorrectionHelper.CorrectBrightness(image, 10);
             return image;
         }
@@ -349,14 +349,13 @@ namespace Proj.Filters
 
 
     }
-    //brannan - виньетка, уменьшение насышенности и контраста
+    //brannan - уменьшение насышенности и контраста
     public class brannan : iPhoFilter
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.Vignette(image);
             image = ImageCorrectionHelper.CorrectContrast(image, -10);
-            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.2f);
             return image;
         }
     }
@@ -394,32 +393,33 @@ namespace Proj.Filters
         }
     }
 
-    //valensia - увеличение яркости, уменьшение контраста, чуть уменьшение насыщенности
+    //valensia - увеличение яркости, уменьшение контраста, уменьшение насыщенности
     public class valensia : iPhoFilter
     {
         public Bitmap Apply(Bitmap image)
         {
             image = ImageCorrectionHelper.CorrectContrast(image, -10);
             image = ImageCorrectionHelper.CorrectBrightness(image, 10);
-            image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
+            image = ImageCorrectionHelper.CorrectSaturation(image, -0.3f);
             return image;
         }
     }
 
 
-    //nashville - голубой оттенок, увеличение яркости
+    //nashville - голубой оттенок, увеличение яркости+насыщенности
     public class nashville : iPhoFilter
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = ImageCorrectionHelper.CorrectBrightness(image, 10);
-            return effect_Helper.PaintMask(image, Color.FromArgb(1, 107, 216, 155));
+            image = ImageCorrectionHelper.CorrectBrightness(image, 20);
+            return effect_Helper.PaintMask(image, Color.FromArgb(30, 0, 0, 255));
+            image = ImageCorrectionHelper.CorrectSaturation(image, 0.5f);
         }
     }
 
     //1977 - розовый оттенок, чуть уменьшение насыщенности
 
-    public class toaster : iPhoFilter
+    public class year : iPhoFilter
     {
 
         public Bitmap Apply(Bitmap image)
