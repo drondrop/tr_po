@@ -52,6 +52,7 @@ namespace Proj.Command
         }
 
         public List<string> PhoFilterNames { get { return _iPhoFilterFactory.getAllTypeNames; } }
+        public List<string> PhoCorrectionNames { get { return _iParamFilterFactory.getAllTypeNames; } }
 
 
 
@@ -63,6 +64,19 @@ namespace Proj.Command
             {
                 // t.param=0.6;
                 inmg.Add(_iPhoFilterFactory.Create(t).Apply(CurrentImage));
+            }
+            // ImageL
+            return inmg;
+        }
+        public List<Bitmap> GetImageCorrection()
+        {
+            List<Bitmap> inmg = new List<Bitmap>();
+            //  inmg.ImageSize = new System.Drawing.Size(64, 64);
+            foreach (var t in _iParamFilterFactory.getAllTypeNames)
+            {
+                var tt = _iParamFilterFactory.Create(t);
+                 tt.param = 0.6;
+                 inmg.Add(tt.Apply(CurrentImage));
             }
             // ImageL
             return inmg;

@@ -37,7 +37,8 @@ namespace Projector.ViewModels
 
     public class ViewModel : INotifyPropertyChanged
     {
-        ObservableCollection<ListItem> m_lstProducts = new ObservableCollection<ListItem>();
+        ObservableCollection<ListItem> m_lstFilters = new ObservableCollection<ListItem>();
+        ObservableCollection<ListItem> m_lstCorrections = new ObservableCollection<ListItem>();
         private BitmapImage _ButtonImage;
         ImageProcessWin _iProcc;
 
@@ -54,7 +55,7 @@ namespace Projector.ViewModels
             var tttt = iProcc.PhoFilterNames;
             for (int i = 0; i < tttt.Count; i++)
             {
-                m_lstProducts.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ttt[i]), Title = tttt[i] });
+                m_lstFilters.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ttt[i]), Title = tttt[i] });
             }
 
         }
@@ -79,13 +80,27 @@ namespace Projector.ViewModels
         #region Property
         public ObservableCollection<ListItem> ProductList
         {
-            get { return m_lstProducts; }
+            get { return m_lstFilters; }
             set
             {
-                if (value != m_lstProducts)
+                if (value != m_lstFilters)
                 {
-                    m_lstProducts = value;
+                    m_lstFilters = value;
                     InvokePropertyChanged("ProductList");
+
+                }
+
+            }
+        }
+        public ObservableCollection<ListItem> CorrectionList
+        {
+            get { return m_lstCorrections; }
+            set
+            {
+                if (value != m_lstCorrections)
+                {
+                    m_lstCorrections = value;
+                    InvokePropertyChanged("CorrectionList");
 
                 }
 
@@ -142,14 +157,25 @@ namespace Projector.ViewModels
             _iProcc.LoadFromFile();
             ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
 
-            var ttt = _iProcc.GetImageFilters();
-            var tttt = _iProcc.PhoFilterNames;
-            var ttttt = new ObservableCollection<ListItem>();
-            for (int i = 0; i < tttt.Count; i++)
+            var ImageFilters = _iProcc.GetImageFilters();
+            var PhoFilterNames = _iProcc.PhoFilterNames;
+            var ObservableListItemFilters = new ObservableCollection<ListItem>();
+            for (int i = 0; i < PhoFilterNames.Count; i++)
             {
-                ttttt.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ttt[i]), Title = tttt[i] });
+                ObservableListItemFilters.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ImageFilters[i]), Title = PhoFilterNames[i] });
             }
-            ProductList = ttttt;
+            ProductList = ObservableListItemFilters;
+
+            var ImageCorrection = _iProcc.GetImageCorrection();
+            var CorrectionFilterNames = _iProcc.PhoCorrectionNames;
+            var ObservableListItemCorrection = new ObservableCollection<ListItem>();
+            for (int i = 0; i < CorrectionFilterNames.Count; i++)
+            {
+                ObservableListItemCorrection.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ImageCorrection[i]), Title = CorrectionFilterNames[i] });
+            }
+            CorrectionList = ObservableListItemCorrection;
+
+
         }
         #endregion
         #region SaveCommand

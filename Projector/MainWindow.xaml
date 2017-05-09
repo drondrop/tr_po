@@ -52,16 +52,32 @@
             </TabItem>
             <TabItem Header="Эффекты">
                 <Grid Background="#FFE5E5E5" Margin="9,24,7,8">
-                    <ListView ItemsSource="{Binding ProductList}" x:Name="listView1" HorizontalAlignment="Center" Margin="0,10,10,10" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+
+                    <Slider  x:Name="slider2"  Value="50"  Minimum="0" Maximum="100"   HorizontalAlignment="Center" Margin="0,36,0,0" VerticalAlignment="Top" Width="300">
+                    </Slider>
+                    <ListView ItemsSource="{Binding CorrectionList}" x:Name="listView1" HorizontalAlignment="Center" Margin="0,10,10,10" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
                         <ListView.ItemTemplate >
                             <DataTemplate >
-                                <Slider x:Name="slider2" HorizontalAlignment="Center" Margin="0,36,0,0" VerticalAlignment="Top" Width="300"/>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                                   
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                                        <Image Source="{Binding ImageData}" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill" Width="80" Height="80" />
+                                        <TextBlock Text="{Binding Title}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+                                     </StackPanel>
+                                   
+                                </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>
