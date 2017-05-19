@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Projector"
         mc:Ignorable="d"
         
-        Title="Projector" Height="650" Width="500" Background="Gray" WindowStartupLocation="CenterScreen">
+        Title="Projector" Height="650" Width="500" Background="Gray" WindowStartupLocation="CenterScreen" MinHeight="650" MinWidth="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"></RowDefinition>
@@ -51,12 +51,12 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Эффекты">
-                <Grid Background="#FFE5E5E5" Margin="9,24,7,8">
+                <Grid Background="#FFE5E5E5" Margin="9,10,7,8">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
 
-                    <Slider  x:Name="slider2"  Value="50"  Minimum="0" Maximum="100"   HorizontalAlignment="Center" Margin="0,36,0,0" VerticalAlignment="Top" Width="300">
+                    <Slider  x:Name="slider2"  Value="50"  Minimum="0" Maximum="100"   HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="300">
                     </Slider>
-                    <ListView ItemsSource="{Binding CorrectionList}" x:Name="listView1" HorizontalAlignment="Center" Margin="0,10,10,10" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
+                    <ListView ItemsSource="{Binding CorrectionList}" x:Name="listView1" HorizontalAlignment="Center" Margin="0,8,8,8" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Center">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
