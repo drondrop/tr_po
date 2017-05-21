@@ -1,4 +1,7 @@
-﻿using Proj.Command;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Ioc;
+using Microsoft.Practices.ServiceLocation;
+using Proj.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +17,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-namespace Projector.ViewModels
+namespace Projector.ViewModel
 {
     public class ListItem
     {
@@ -33,9 +36,16 @@ namespace Projector.ViewModels
         }
 
     }
+    /// <summary>
+    /// This class contains static references to all the view models in the
+    /// application and provides an entry point for the bindings.
+    /// <para>
+    /// See http://www.galasoft.ch/mvvm
+    /// </para>
+    /// </summary>
 
 
-    public class ViewModel : INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase,INotifyPropertyChanged
     {
         ObservableCollection<ListItem> m_lstFilters = new ObservableCollection<ListItem>();
         ObservableCollection<ListItem> m_lstCorrections = new ObservableCollection<ListItem>();
@@ -43,22 +53,12 @@ namespace Projector.ViewModels
         ImageProcessWin _iProcc;
 
         #region Constructors
-        public ViewModel()
+        public MainViewModel()
         {
             _iProcc = new ImageProcessWin();
            // ItemClickedCommand = new DelegateCommand<ItemClickEventArgs>(OnItemClicked);
         }
-        public ViewModel(ImageProcessWin iProcc)
-        {
-            _iProcc = iProcc;
-            var ttt = iProcc.GetImageFilters();
-            var tttt = iProcc.PhoFilterNames;
-            for (int i = 0; i < tttt.Count; i++)
-            {
-                m_lstFilters.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ttt[i]), Title = tttt[i] });
-            }
-
-        }
+        
         #endregion
         private BitmapImage Bitmap2BitmapImage(Bitmap bitmap)
         {
@@ -117,6 +117,28 @@ namespace Projector.ViewModels
                     _ButtonImage = value;
                     InvokePropertyChanged("ButtonImage");
 
+                }
+
+            }
+        }
+        private string _CorrectionCommand;
+        private int _ElevationAngle=50;
+        public  int ElevationAngle
+        {
+            get { return _ElevationAngle; }
+            set
+            {
+                if (value != _ElevationAngle)
+                {
+
+                    _ElevationAngle = value;
+                   if(_CorrectionCommand!=null)
+                   {
+                       double param=_ElevationAngle/100.0;
+                      ButtonImage =Bitmap2BitmapImage( _iProcc.DoPreView(_iProcc.CreateICommand(_CorrectionCommand, param)));
+                   // ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
+                   }
+                    InvokePropertyChanged("ElevationAngle");
                 }
 
             }
@@ -259,7 +281,30 @@ namespace Projector.ViewModels
 
         }
         #endregion
+        #region CorrectionSelectApplyCommand
+        private ICommand _CorrectionSelectApplyCommand;
+        public ICommand CorrectionSelectApplyCommand
+        {
+            get
+            {
+                return _CorrectionSelectApplyCommand ?? (_CorrectionSelectApplyCommand = new RelayCommand(param => CorrectionSelectApplyCommandExecute(param), param => CorrectionSelectApplyCommandCanExecute));
 
+            }
+        }
+        private bool CorrectionSelectApplyCommandCanExecute
+        {
+            get { return true; }
+        }
+        private void CorrectionSelectApplyCommandExecute(object param)
+        {
+            var ttt = param as ListItem;
+            _CorrectionCommand = ttt.Title;
+            ElevationAngle = 50;
+            //_iProcc.DoWithUndo(_iProcc.CreateICommand(ttt.Title));
+            //ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
+
+        }
+        #endregion
 
       
         #endregion
