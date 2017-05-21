@@ -70,7 +70,7 @@
                            
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="LostMouseCapture">
-                                    <i:InvokeCommandAction Command="{Binding OpenCommand}"/>
+                                    <i:InvokeCommandAction Command="{Binding CorrectionApplyCommand}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             

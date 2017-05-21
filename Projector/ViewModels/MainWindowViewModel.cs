@@ -306,7 +306,30 @@ namespace Projector.ViewModel
         }
         #endregion
 
-      
+        #region CorrectionApplyCommand
+        private ICommand _CorrectionApplyCommand;
+        public ICommand CorrectionApplyCommand
+        {
+            get
+            {
+                return _CorrectionApplyCommand ?? (_CorrectionApplyCommand = new RelayCommand(param => CorrectionApplyCommandExecute(param), param => CorrectionApplyCommandCanExecute));
+
+            }
+        }
+        private bool CorrectionApplyCommandCanExecute
+        {
+            get { return true; }
+        }
+        private void CorrectionApplyCommandExecute(object param)
+        { 
+            if (_CorrectionCommand != null)
+            {     
+                double param1 = _ElevationAngle / 100.0;
+               _iProcc.DoWithUndo(_iProcc.CreateICommand(_CorrectionCommand, param1));
+                ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
+            }
+        }
+        #endregion
         #endregion
     }
 
