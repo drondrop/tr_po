@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AForge.Imaging.Filters;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -33,14 +34,20 @@ namespace Proj.Filters
             }
         }
 
-        public static Bitmap PaintMask(Bitmap b, Color color)
+        public static void PaintMask(ref Bitmap b, Color color)
         {
+                
+                
             Bitmap final = new Bitmap(b);
-            using (Graphics g = Graphics.FromImage(final))
-            {
-                PaintMask(g, new Rectangle(0, 0, final.Width, final.Height), color);
-                return final;
-            }
+            
+                using (Graphics g = Graphics.FromImage(final))
+                {
+                    PaintMask(g, new Rectangle(0, 0, final.Width, final.Height), color);
+                   
+                
+            } b = (Bitmap)final.Clone();
+                    
+                    final.Dispose();
         }
         static void PaintVignette(Graphics g, Rectangle bounds)
         {
@@ -70,14 +77,27 @@ namespace Proj.Filters
             }
         }
 
-        public static Bitmap Vignette(Bitmap b)
+        public static void  Vignette(ref Bitmap b)
         {
             Bitmap final = new Bitmap(b);
-            using (Graphics g = Graphics.FromImage(final))
-            {
-                PaintVignette(g, new Rectangle(0, 0, final.Width, final.Height));
-                return final;
-            }
+            
+                using (Graphics g = Graphics.FromImage(final))
+                {
+                    PaintVignette(g, new Rectangle(0, 0, final.Width, final.Height));
+                    
+                   
+                } 
+            b = (Bitmap)final.Clone();
+            final.Dispose();
+        
+    }
+
+        public static Bitmap  Resize( Bitmap input,int W, int H)
+        {
+           
+           var _filter = new ResizeBicubic(W, H);
+           return _filter.Apply(input);
         }
+        
     }
 }

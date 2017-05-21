@@ -20,6 +20,7 @@ namespace Proj.Command
     {
         protected T _originalImage;
         protected T _currentImage;
+        protected T _shortCutImage;
         protected UndoRedoKeper<T> _imageUndoRedoFactory;
         protected ImageProcess()
         {
@@ -42,41 +43,57 @@ namespace Proj.Command
         {
             _imageUndoRedoFactory.Reset();
             _originalImage = FileWorkWinHelper.LoadFromFile();
-            _currentImage = _originalImage;
+            _currentImage = Compress(Resize(_originalImage, 256),72);
+            _shortCutImage = Compress(Resize(_currentImage, 64), 72);
 
         }
 
         public void SaveToFile()
-        {
-            FileWorkWinHelper.SaveToFile(_currentImage);
+        { 
+            FileWorkWinHelper.SaveToFile(_imageUndoRedoFactory.doAll(_originalImage));
         }
 
         public List<string> PhoFilterNames { get { return _iPhoFilterFactory.getAllTypeNames; } }
         public List<string> PhoCorrectionNames { get { return _iParamFilterFactory.getAllTypeNames; } }
 
-
+        private Bitmap Compress(Bitmap input,int resolution)
+        {
+            input.SetResolution(resolution, resolution);
+            return input;
+        }
+        private Bitmap Resize(Bitmap input,int Height)
+        {
+            float coeff = (float)input.Width / (float)input.Height;
+            input = effect_Helper.Resize(input, (int)Math.Floor(Height * coeff), Height);
+            return input;
+        }
 
         public List<Bitmap> GetImageFilters()
         {
             List<Bitmap> inmg = new List<Bitmap>();
           //  inmg.ImageSize = new System.Drawing.Size(64, 64);
+
+            
+            
             foreach (var t in _iPhoFilterFactory.getAllTypeNames)
             {
                 // t.param=0.6;
-                inmg.Add(_iPhoFilterFactory.Create(t).Apply(CurrentImage));
+
+                inmg.Add(_iPhoFilterFactory.Create(t).Apply(_shortCutImage));
             }
             // ImageL
             return inmg;
         }
         public List<Bitmap> GetImageCorrection()
         {
+            
             List<Bitmap> inmg = new List<Bitmap>();
             //  inmg.ImageSize = new System.Drawing.Size(64, 64);
             foreach (var t in _iParamFilterFactory.getAllTypeNames)
             {
                 var tt = _iParamFilterFactory.Create(t);
                  tt.param = 0.6;
-                 inmg.Add(tt.Apply(CurrentImage));
+                 inmg.Add(tt.Apply(_shortCutImage));
             }
             // ImageL
             return inmg;

@@ -26,6 +26,18 @@ namespace Proj.Command
             }
         }
 
+        public T doAll(T input)
+        {
+            foreach (var cmd in _Undo)
+            {
+                input=cmd.DoPreView(input);
+                
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+           
+            return input;
+        }
         public UndoRedoKeper()
         {
             Reset();

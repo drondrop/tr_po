@@ -83,148 +83,8 @@ namespace Proj.Filters
 
     }
 
-    #region masked
-    public abstract class Masked_Helper
-    {
-
-        protected Bitmap Mask
-        {
-            get { return _mask; }
-        }
-
-        private Bitmap _mask;
-        protected Masked_Helper()
-        {
-            _mask = (Bitmap)Projector.Properties.Resources.main;
-            _mask = Grayscale.CommonAlgorithms.BT709.Apply(_mask);
-
-            // Mask = _brightnessCorrection.Apply(Mask);
-        }
-        protected static Bitmap BrightnessCorrection(Bitmap input, int CorrectionValue)
-        {
-            var Correction = new BrightnessCorrection(CorrectionValue);
-            return Correction.Apply(input);
-
-        }
-        public static Bitmap Invert(Bitmap input)
-        {
-            var Filter = new Invert();
-            return Filter.Apply(input);
-        }
-
-
-    }
-    public class Masked_filterBase1 : Masked_Helper
-    {
-        int _bCorrection;
-        public Masked_filterBase1(int bCorrection)
-            : base() { _bCorrection = bCorrection; }
-
-        public Bitmap Apply(Bitmap input)
-        {
-
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(Mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-            resMask = Masked_Helper.BrightnessCorrection(resMask, _bCorrection);
-            resMask = Masked_Helper.Invert(resMask);
-            //resMask = invertFilter.Apply(resMask);
-            Subtract subtractFilter = new Subtract(resMask);
-            return subtractFilter.Apply(input);
-        }
-    }
-    public class Masked_filterBase2 : Masked_Helper
-    {
-        int _bCorrection;
-        public Masked_filterBase2(int bCorrection)
-            : base() { _bCorrection = bCorrection; }
-        public Bitmap Apply(Bitmap input)
-        {
-
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(Mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-            resMask = Masked_Helper.BrightnessCorrection(resMask, _bCorrection);
-            resMask = Masked_Helper.Invert(resMask);
-
-            Add subtractFilter = new Add(resMask);
-            return subtractFilter.Apply(input);
-        }
-
-    }
-    public class Masked_filterBase3 : Masked_Helper
-    {
-        int _bCorrection;
-        public Masked_filterBase3(int bCorrection)
-            : base() { _bCorrection = bCorrection; }
-        public Bitmap Apply(Bitmap input)
-        {
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(Mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-            resMask = Masked_Helper.BrightnessCorrection(resMask, _bCorrection);
-
-
-            Subtract subtractFilter = new Subtract(resMask);
-            return subtractFilter.Apply(input);
-        }
-
-    }
-    public class Masked_filterBase4 : Masked_Helper
-    {
-        int _bCorrection;
-        public Masked_filterBase4(int bCorrection)
-            : base() { _bCorrection = bCorrection; }
-        public Bitmap Apply(Bitmap input)
-        {
-            var resize = new Resize_filter(input.Width, input.Height);
-            var resMask = resize.Apply(Mask);
-            GrayscaleToRGB grayscaleToRGBFilter = new GrayscaleToRGB();
-            resMask = grayscaleToRGBFilter.Apply(resMask);
-
-            resMask = Masked_Helper.BrightnessCorrection(resMask, _bCorrection);
-
-            Add subtractFilter = new Add(resMask);
-            return subtractFilter.Apply(input);
-        }
-
-    }
-    public class Masked_filter1 : Masked_filterBase1
-    {
-
-        public Masked_filter1()
-            : base(150) { }
-
-
-
-    }
-    public class Masked_filter2 : Masked_filterBase2
-    {
-        public Masked_filter2()
-            : base(150) { }
-
-    }
-    public class Masked_filter3 : Masked_filterBase3
-    {
-
-        public Masked_filter3()
-            : base(0) { }
-
-
-    }
-    public class Masked_filter4 : Masked_filterBase4
-    {
-        public Masked_filter4()
-            : base(0)
-        { }
-    }
-    #endregion
+   
+   
     public class Resize_filter
     {
         ResizeBicubic _filter;
@@ -252,12 +112,13 @@ namespace Proj.Filters
     /// увеличение яркости только в центре,
     /// маленькое уменьшение насыщенности
     /// </summary>
-    public class Aamaro : Masked_Helper, iPhoFilter
+    public class Aamaro :  iPhoFilter
     {
         public Aamaro() { }
         public Bitmap Apply(Bitmap input)
         {
-            return effect_Helper.Vignette(input);//subtractFilter.Apply(input);
+            effect_Helper.Vignette(ref input);
+            return input;//subtractFilter.Apply(input);
         }
 
     }
@@ -266,9 +127,9 @@ namespace Proj.Filters
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.Vignette(image);
+            effect_Helper.Vignette(ref image);
             image = ImageCorrectionHelper.CorrectContrast(image, -10);
-            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 255, 255, 0));
             return image;
         }
     }
@@ -278,10 +139,10 @@ namespace Proj.Filters
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.Vignette(image);
+            effect_Helper.Vignette(ref image);
             image = ImageCorrectionHelper.CorrectContrast(image, 10);
             image = ImageCorrectionHelper.CorrectBrightness(image, 10);
-            image = effect_Helper.PaintMask(image, Color.FromArgb(20, 255, 105, 180));
+            effect_Helper.PaintMask(ref image, Color.FromArgb(20, 255, 105, 180));
             return image;
         }
     }
@@ -290,7 +151,7 @@ namespace Proj.Filters
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.Vignette(image);
+            effect_Helper.Vignette(ref image);
             image = ImageCorrectionHelper.CorrectContrast(image, 15);
             image = ImageCorrectionHelper.CorrectSaturation(image, 0.1f);
             return image;
@@ -303,7 +164,7 @@ namespace Proj.Filters
         public Bitmap Apply(Bitmap image)
         {
             image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
-            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 255, 255, 0));
             return image;
         }
     }
@@ -314,7 +175,7 @@ namespace Proj.Filters
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.Vignette(image);
+             effect_Helper.Vignette(ref image);
             image = ImageCorrectionHelper.CorrectContrast(image, -10);
             image = ImageCorrectionHelper.CorrectBrightness(image, 10);
             return image;
@@ -325,9 +186,9 @@ namespace Proj.Filters
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.Vignette(image);
+             effect_Helper.Vignette(ref image);
             image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
-            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
+             effect_Helper.PaintMask(ref image, Color.FromArgb(30, 255, 255, 0));
             return image;
         }
     }
@@ -336,8 +197,8 @@ namespace Proj.Filters
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.PaintMask(image, Color.FromArgb(20, 255, 105, 180));
-            image = effect_Helper.Vignette(image);
+             effect_Helper.PaintMask(ref image, Color.FromArgb(20, 255, 105, 180));
+             effect_Helper.Vignette(ref image);
             image = ImageCorrectionHelper.CorrectContrast(image, -10);
             image = ImageCorrectionHelper.CorrectBrightness(image, -10);
             image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
@@ -350,7 +211,7 @@ namespace Proj.Filters
 
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 105, 180));
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 255, 105, 180));
             image = ImageCorrectionHelper.CorrectContrast(image, -10);
             return image;
         }
@@ -384,7 +245,7 @@ namespace Proj.Filters
         public Bitmap Apply(Bitmap image)
         {
             image = ImageCorrectionHelper.CorrectBrightness(image, 15);
-            return effect_Helper.PaintMask(image, Color.FromArgb(30, 0, 0, 255));
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 0, 0, 255));
             return image;
         }
     }
@@ -394,9 +255,9 @@ namespace Proj.Filters
     {
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.Vignette(image);
+             effect_Helper.Vignette(ref image);
             image = ImageCorrectionHelper.CorrectBrightness(image, 5);
-            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0));
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 255, 255, 0));
             return image;
         }
     }
@@ -420,8 +281,9 @@ namespace Proj.Filters
         public Bitmap Apply(Bitmap image)
         {
             image = ImageCorrectionHelper.CorrectBrightness(image, 20);
-            return effect_Helper.PaintMask(image, Color.FromArgb(30, 0, 0, 255));
-            image = ImageCorrectionHelper.CorrectSaturation(image, 0.5f);
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 0, 0, 255));
+            
+            return image;image = ImageCorrectionHelper.CorrectSaturation(image, 0.5f);
         }
     }
 
@@ -432,7 +294,7 @@ namespace Proj.Filters
 
         public Bitmap Apply(Bitmap image)
         {
-            image = effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 105, 180));
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 255, 105, 180));
             image = ImageCorrectionHelper.CorrectSaturation(image, -0.1f);
             return image;
         }
@@ -446,7 +308,8 @@ namespace Proj.Filters
         {
             image = ImageCorrectionHelper.CorrectContrast(image, 10);
             image = ImageCorrectionHelper.CorrectBrightness(image, 10);
-            return effect_Helper.PaintMask(image, Color.FromArgb(30, 255, 255, 0)); ;
+            effect_Helper.PaintMask(ref image, Color.FromArgb(30, 255, 255, 0));
+            return image;
         }
     }
 
