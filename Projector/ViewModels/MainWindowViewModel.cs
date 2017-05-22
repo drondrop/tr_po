@@ -65,7 +65,7 @@ namespace Projector.ViewModel
 
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.Save(memory, ImageFormat.Png);
+                bitmap.Save(memory, ImageFormat.Bmp);
                 memory.Position = 0;
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
@@ -176,27 +176,33 @@ namespace Projector.ViewModel
         }
         private void OpenCommandExecute()
         {
-            _iProcc.LoadFromFile();
-            ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
-
-            var ImageFilters = _iProcc.GetImageFilters();
-            var PhoFilterNames = _iProcc.PhoFilterNames;
-            var ObservableListItemFilters = new ObservableCollection<ListItem>();
-            for (int i = 0; i < PhoFilterNames.Count; i++)
+            try
             {
-                ObservableListItemFilters.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ImageFilters[i]), Title = PhoFilterNames[i] });
-            }
-            ProductList = ObservableListItemFilters;
+                _iProcc.LoadFromFile();
+                ButtonImage = Bitmap2BitmapImage(_iProcc.CurrentImage);
 
-            var ImageCorrection = _iProcc.GetImageCorrection();
-            var CorrectionFilterNames = _iProcc.PhoCorrectionNames;
-            var ObservableListItemCorrection = new ObservableCollection<ListItem>();
-            for (int i = 0; i < CorrectionFilterNames.Count; i++)
+                var ImageFilters = _iProcc.GetImageFilters();
+                var PhoFilterNames = _iProcc.PhoFilterNames;
+                var ObservableListItemFilters = new ObservableCollection<ListItem>();
+                for (int i = 0; i < PhoFilterNames.Count; i++)
+                {
+                    ObservableListItemFilters.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ImageFilters[i]), Title = PhoFilterNames[i] });
+                }
+                ProductList = ObservableListItemFilters;
+
+                var ImageCorrection = _iProcc.GetImageCorrection();
+                var CorrectionFilterNames = _iProcc.PhoCorrectionNames;
+                var ObservableListItemCorrection = new ObservableCollection<ListItem>();
+                for (int i = 0; i < CorrectionFilterNames.Count; i++)
+                {
+                    ObservableListItemCorrection.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ImageCorrection[i]), Title = CorrectionFilterNames[i] });
+                }
+                CorrectionList = ObservableListItemCorrection;
+            }
+            catch (Exception ex)
             {
-                ObservableListItemCorrection.Add(new ListItem() { ImageData = Bitmap2BitmapImage(ImageCorrection[i]), Title = CorrectionFilterNames[i] });
-            }
-            CorrectionList = ObservableListItemCorrection;
 
+            }
 
         }
         #endregion

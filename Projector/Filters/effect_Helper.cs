@@ -34,20 +34,20 @@ namespace Proj.Filters
             }
         }
 
-        public static void PaintMask(ref Bitmap b, Color color)
+        public static void PaintMask(ref Bitmap final, Color color)
         {
                 
                 
-            Bitmap final = new Bitmap(b);
+           // Bitmap final = new Bitmap(b);
             
                 using (Graphics g = Graphics.FromImage(final))
                 {
                     PaintMask(g, new Rectangle(0, 0, final.Width, final.Height), color);
-                   
+                   // b = (Bitmap)final.Clone();
+
+                   // final.Dispose(); final = null;
                 
-            } b = (Bitmap)final.Clone();
-                    
-                    final.Dispose();
+            }
         }
         static void PaintVignette(Graphics g, Rectangle bounds)
         {
@@ -77,18 +77,16 @@ namespace Proj.Filters
             }
         }
 
-        public static void  Vignette(ref Bitmap b)
+        public static void  Vignette(ref Bitmap final)
         {
-            Bitmap final = new Bitmap(b);
+            //Bitmap final = new Bitmap(b);
             
                 using (Graphics g = Graphics.FromImage(final))
                 {
                     PaintVignette(g, new Rectangle(0, 0, final.Width, final.Height));
-                    
-                   
-                } 
-            b = (Bitmap)final.Clone();
-            final.Dispose();
+                   // b = (Bitmap)final.Clone();
+                    //final.Dispose(); final = null;
+                }
         
     }
 

@@ -42,9 +42,13 @@ namespace Proj.Command
         public void LoadFromFile()
         {
             _imageUndoRedoFactory.Reset();
-            _originalImage = FileWorkWinHelper.LoadFromFile();
+            
+_originalImage = FileWorkWinHelper.LoadFromFile();
             _currentImage = Compress(Resize(_originalImage, 256),72);
             _shortCutImage = Compress(Resize(_currentImage, 64), 72);
+            
+            
+            
 
         }
 
@@ -78,8 +82,8 @@ namespace Proj.Command
             foreach (var t in _iPhoFilterFactory.getAllTypeNames)
             {
                 // t.param=0.6;
-
-                inmg.Add(_iPhoFilterFactory.Create(t).Apply(_shortCutImage));
+                var img = (Bitmap)_shortCutImage.Clone();
+                inmg.Add(_iPhoFilterFactory.Create(t).Apply(img));
             }
             // ImageL
             return inmg;

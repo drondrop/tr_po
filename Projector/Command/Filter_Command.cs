@@ -24,7 +24,7 @@ namespace Proj.Command
         #region  ICommand
         public Bitmap Do(Bitmap input)
         {
-            _undoValue = input;
+            _undoValue = (Bitmap)input.Clone();
             return _filter.Apply(input);
         }
         public Bitmap Undo(Bitmap input)

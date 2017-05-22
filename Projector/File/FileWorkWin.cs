@@ -25,7 +25,7 @@ namespace Proj.File
                     save.Filter = String.Format("{0}{1}{2} ({3})|{3}", save.Filter, sep, codecName, c.FilenameExtension);
                     sep = "|";
                 }
-                save.Filter = String.Format("{0}{1}{2} ({3})|{3}", save.Filter, sep, "All Files", "*.*");
+               // save.Filter = String.Format("{0}{1}{2} ({3})|{3}", save.Filter, sep, "All Files", "*.*");
                 save.DefaultExt = ".png"; // Default file extension 
                 if (save.ShowDialog() == DialogResult.OK)
                 {
@@ -48,7 +48,7 @@ namespace Proj.File
                     open.Filter = String.Format("{0}{1}{2} ({3})|{3}", open.Filter, sep, codecName, c.FilenameExtension);
                     sep = "|";
                 }
-                open.Filter = String.Format("{0}{1}{2} ({3})|{3}", open.Filter, sep, "All Files", "*.*");
+               
                 open.DefaultExt = ".png"; // Default file extension 
                 // Show open file dialog box 
                 if (open.ShowDialog() == DialogResult.OK)

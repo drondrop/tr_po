@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace Proj.Command
 {
+
+    
     public class UndoRedoKeper<T>
     {
-        private Stack<ICommand<T>> _Undo;
-        private Stack<ICommand<T>> _Redo;
+        private LimitedSizeStack<ICommand<T>> _Undo;
+        private LimitedSizeStack<ICommand<T>> _Redo;
 
         public int UndoCount
         {
@@ -41,11 +43,12 @@ namespace Proj.Command
         public UndoRedoKeper()
         {
             Reset();
+
         }
         public void Reset()
         {
-            _Undo = new Stack<ICommand<T>>();
-            _Redo = new Stack<ICommand<T>>();
+            _Undo = new LimitedSizeStack<ICommand<T>>(10);
+            _Redo = new LimitedSizeStack<ICommand<T>>(10);
         }
         /// <summary>
         /// 
